@@ -3,9 +3,9 @@ import Navbar from "../../components/Navbar";
 import Popular from "../../components/Popular";
 const Dashboard = () => {
   return (
-    <div className="bg-black text-white px-10">
+    <div>
       <Navbar />
-      <Trending />;
+      <Trending />
       <Popular />
     </div>
   );

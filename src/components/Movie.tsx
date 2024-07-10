@@ -20,6 +20,7 @@ interface Movie {
 const MovieDetails: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const [movie, setMovie] = useState<Movie | null>(null);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     const fetchMovie = async () => {
@@ -36,7 +37,7 @@ const MovieDetails: React.FC = () => {
         const response = await axios.get(url, options);
         setMovie(response.data);
       } catch (error) {
-        console.error("Error fetching movie details:", error);
+        setError("Failed to fetch movies. Please try again later.");
       }
     };
 

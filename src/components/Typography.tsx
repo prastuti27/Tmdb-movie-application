@@ -18,6 +18,7 @@ const Typography = ({
   const defaultClassNames = {
     h1: "text-purple-dark text-start text-5xl font-semibold",
     h2: "text-sky-600 text-3xl font-bold mb-6 mt-6",
+    h3: "text-lg font-semibold mb-2",
     p: "text-sm text-gray-600",
   };
 

@@ -1,4 +1,3 @@
-import Button from "./Button";
 import logoSvg from "../assets/svgs/logo.svg";
 
 const Navbar = () => {
@@ -12,7 +11,6 @@ const Navbar = () => {
         placeholder="Search"
         className="px-3 py-1 w-1/2 bg-white rounded-md text-gray-800 placeholder-gray-500 focus:outline-none"
       />
-      <Button />
     </div>
   );
 };

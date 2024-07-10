@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import Typography from "./Typography";
 import Card from "./Card";
+
 import { useNavigate } from "react-router-dom";
 
 interface Movie {
@@ -28,7 +29,7 @@ const MovieTrendingList: React.FC = () => {
 
       try {
         const response = await axios.get(url, options);
-        console.log(response.data);
+
         setMovies(response.data.results);
       } catch (error) {
         setError("Failed to fetch movies. Please try again later.");
@@ -39,7 +40,6 @@ const MovieTrendingList: React.FC = () => {
   }, []);
 
   const handleCardClick = (id: string) => {
-    console.log("id", id);
     navigate(`/movie/${id}`);
   };
   return (
