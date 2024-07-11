@@ -1,6 +1,6 @@
 import React from "react";
 import Typography from "./Typography";
-import Button from "./Button";
+// import Button from "./Button";
 
 interface CardProps {
   title: string;
@@ -16,7 +16,7 @@ const Card: React.FC<CardProps> = ({ title, image, description }) => {
         <Typography content={title} variant="h2" />
         <Typography content={description} variant="p" />
       </div>
-      <Button text="+Watchlist" />
+      {/* <Button text="+Watchlist" /> */}
     </div>
   );
 };

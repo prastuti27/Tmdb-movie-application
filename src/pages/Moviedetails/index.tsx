@@ -23,28 +23,40 @@ interface Video {
   type: string;
 }
 
+interface Review {
+  author: string;
+  content: string;
+  id: string;
+}
+
 const MovieDetails: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const [movieDetails, setMovieDetails] = useState<Movie | null>(null);
   const [trailer, setTrailer] = useState<string | null>(null);
+  const [reviews, setReviews] = useState<Review[]>([]);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     const fetchMovieDetails = async () => {
-      const movieUrl = `https://api.themoviedb.org/3/movie/${id}?api_key=1b2714d190350c64115a9451be77cac0`;
-      const videoUrl = `https://api.themoviedb.org/3/movie/${id}/videos?api_key=1b2714d190350c64115a9451be77cac0`;
+      const authToken = import.meta.env.VITE_AUTH_TOKEN;
+      const apiKey = import.meta.env.VITE_API_KEY;
+
+      const movieUrl = `https://api.themoviedb.org/3/movie/${id}?api_key=${apiKey}`;
+      const videoUrl = `https://api.themoviedb.org/3/movie/${id}/videos?api_key=${apiKey}`;
+      const reviewsUrl = `https://api.themoviedb.org/3/movie/${id}/reviews?api_key=${apiKey}`;
       const options = {
         headers: {
-          Authorization:
-            "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiIxYjI3MTRkMTkwMzUwYzY0MTE1YTk0NTFiZTc3Y2FjMCIsIm5iZiI6MTcyMDQwNTY2Mi4xMTg1NzgsInN1YiI6IjY2ODRlMDY4YTk1MjMzM2ZkMmQxYmE3NiIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.vuHABc-MJbUjhn3TKCLT5nXywNbi6m9-Qte-hEkJoqw",
+          Authorization: `Bearer ${authToken}`,
         },
       };
 
       try {
-        const [movieResponse, videoResponse] = await Promise.all([
-          axios.get(movieUrl, options),
-          axios.get(videoUrl, options),
-        ]);
+        const [movieResponse, videoResponse, reviewsResponse] =
+          await Promise.all([
+            axios.get(movieUrl, options),
+            axios.get(videoUrl, options),
+            axios.get(reviewsUrl, options),
+          ]);
 
         setMovieDetails(movieResponse.data);
 
@@ -55,8 +67,10 @@ const MovieDetails: React.FC = () => {
         if (trailerVideo) {
           setTrailer(`https://www.youtube.com/embed/${trailerVideo.key}`);
         }
+
+        setReviews(reviewsResponse.data.results);
       } catch (error) {
-        setError("Failed to fetch movies. Please try again later.");
+        setError("Failed to fetch movie details. Please try again later.");
       }
     };
 
@@ -132,6 +146,22 @@ const MovieDetails: React.FC = () => {
             </ul>
           </div>
         </div>
+      </div>
+
+      <div className="max-w-4xl mx-auto px-4 py-8">
+        <h3 className="text-2xl font-bold mb-4">Reviews</h3>
+        {reviews.length > 0 ? (
+          <ul>
+            {reviews.map((review) => (
+              <li key={review.id}>
+                <h4 className="font-semibold">{review.author}</h4>
+                <p>{review.content}</p>
+              </li>
+            ))}
+          </ul>
+        ) : (
+          <p>No reviews available.</p>
+        )}
       </div>
     </div>
   );

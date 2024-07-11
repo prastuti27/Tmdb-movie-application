@@ -9,19 +9,17 @@ echo "🏗️👷${yellow} Executing pre-commit hook...${no_color}👷‍♂️�
 echo "🏗️👷 ${green} Styling your project before committing...${no_color}👷‍♂️🏗️"
 echo "🏗️👷  ${green} please be patient, this may take a while...${no_color}👷‍♂️🏗️"
 
+
 exec 1>&2
 # enable user input
 exec < /dev/tty
-
-# Updated regular expression to detect console. references
-consoleregexp='console\.\([a-zA-Z]\+\)'
-
+consoleregexp='console\.[clear|dir|log|info]'
 # CHECK
-if test $(git diff --cached | grep -c "$consoleregexp") != 0
+if test $(git diff --cached | grep $consoleregexp | wc -l) != 0
 then 
-  git diff --cached | grep -ne "$consoleregexp"
-  echo "${red} COMMIT REJECTED!  Found console. references. Please remove them before committing.${no_color}"
-  exit 1;
+  exec git diff --cached | grep -ne $consoleregexp
+  echo  "${red} COMMIT REJECTED!  Found console. references. Please remove them before committing.\n${no_color}"
+    exit 1;
 fi
 
 # Check ESLint Standards
@@ -34,3 +32,4 @@ npx lint-staged ||
 echo "${green}No console. references found!${no_color}\n"
 echo "${green}Git pre-commit hook was successful!${no_color}\n"
 echo "🎉 ${green} No error found: Checking the commit message....${no_color} ✨🚀🏄‍♂️🍻"
+

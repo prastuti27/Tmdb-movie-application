@@ -38,7 +38,30 @@ const MovieTrendingList: React.FC = () => {
 
     fetchMovies();
   }, []);
+  const addToWatchlist = async (movieId: number) => {
+    const accountId = "{your_account_id}";
+    const [error, setError] = useState<string | null>(null);
+    const url = `https://api.themoviedb.org/3/account/${accountId}/watchlist`;
+    const options = {
+      headers: {
+        Authorization:
+          "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiIxYjI3MTRkMTkwMzUwYzY0MTE1YTk0NTFiZTc3Y2FjMCIsIm5iZiI6MTcyMDQwNTY2Mi4xMTg1NzgsInN1YiI6IjY2ODRlMDY4YTk1MjMzM2ZkMmQxYmE3NiIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.vuHABc-MJbUjhn3TKCLT5nXywNbi6m9-Qte-hEkJoqw",
+        "Content-Type": "application/json;charset=utf-8",
+      },
+    };
 
+    const body = {
+      media_type: "movie",
+      media_id: movieId,
+      watchlist: true,
+    };
+
+    try {
+      const response = await axios.post(url, body, options);
+    } catch (error) {
+      setError("Failed to fetch movies. Please try again later.");
+    }
+  };
   const handleCardClick = (id: string) => {
     navigate(`/movie/${id}`);
   };
@@ -57,6 +80,7 @@ const MovieTrendingList: React.FC = () => {
               image={`https://image.tmdb.org/t/p/w500${movie.backdrop_path}`}
               description={movie.overview}
             />
+            <button onClick={() => addToWatchlist(movie.id)}></button>
           </div>
         ))}
       </div>

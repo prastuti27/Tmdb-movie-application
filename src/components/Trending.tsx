@@ -29,7 +29,6 @@ const MovieTrendingList: React.FC = () => {
 
       try {
         const response = await axios.get(url, options);
-
         setMovies(response.data.results);
       } catch (error) {
         setError("Failed to fetch movies. Please try again later.");
@@ -42,9 +41,36 @@ const MovieTrendingList: React.FC = () => {
   const handleCardClick = (id: string) => {
     navigate(`/movie/${id}`);
   };
+
+  const addToWatchlist = async (movieId: number) => {
+    const [error, setError] = useState<string | null>(null);
+    const accountId = "{your_account_id}";
+    const url = `https://api.themoviedb.org/3/account/${accountId}/watchlist`;
+    const options = {
+      headers: {
+        Authorization:
+          "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiIxYjI3MTRkMTkwMzUwYzY0MTE1YTk0NTFiZTc3Y2FjMCIsIm5iZiI6MTcyMDQwNTY2Mi4xMTg1NzgsInN1YiI6IjY2ODRlMDY4YTk1MjMzM2ZkMmQxYmE3NiIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.vuHABc-MJbUjhn3TKCLT5nXywNbi6m9-Qte-hEkJoqw",
+        "Content-Type": "application/json;charset=utf-8",
+      },
+    };
+
+    const body = {
+      media_type: "movie",
+      media_id: movieId,
+      watchlist: true,
+    };
+
+    try {
+      const response = await axios.post(url, body, options);
+    } catch (error) {
+      setError("Failed to fetch movies. Please try again later.");
+    }
+  };
+
   return (
     <div>
       <Typography variant="h2" content="Trending Movies" />
+      {error && <p>{error}</p>}
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
         {movies.map((movie) => (
           <div
@@ -52,11 +78,13 @@ const MovieTrendingList: React.FC = () => {
             onClick={() => handleCardClick(movie.id.toString())}
           >
             <Card
-              key={movie.id}
               title={movie.title}
               image={`https://image.tmdb.org/t/p/w500${movie.backdrop_path}`}
               description={movie.overview}
             />
+            <button onClick={() => addToWatchlist(movie.id)}>
+              Add to Watchlist
+            </button>
           </div>
         ))}
       </div>

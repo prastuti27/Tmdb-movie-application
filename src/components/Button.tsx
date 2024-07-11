@@ -1,7 +1,9 @@
 type ButtonProps = {
   text: string;
-  // id: string;
+  handleWatchlist: (movieId: number) => void;
+  movieId: number;
 };
+
 const Button: React.FC<ButtonProps> = ({ text }) => {
   return (
     <button className="bg-sky-700 p-2 mt-5 rounded-md font-semibold    ">
