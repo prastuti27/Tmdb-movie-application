@@ -9,6 +9,7 @@ interface RatingModalProps {
   rating: number;
   handleRatingChange: (newRating: number) => void;
   handleRateSubmit: (event: React.FormEvent) => void;
+  handleDelete: () => void;
 }
 
 const RatingModal: React.FC<RatingModalProps> = ({
@@ -19,6 +20,7 @@ const RatingModal: React.FC<RatingModalProps> = ({
   rating,
   handleRatingChange,
   handleRateSubmit,
+  handleDelete,
 }) => {
   if (!showModal) return null;
 
@@ -49,9 +51,16 @@ const RatingModal: React.FC<RatingModalProps> = ({
           </div>
           <button
             type="submit"
-            className="bg-gray-700 text-white px-4 py-2 rounded"
+            className="bg-gray-700 text-white px-4 py-2 rounded mr-2"
           >
             Rate
+          </button>
+          <button
+            type="button"
+            onClick={handleDelete}
+            className="bg-red-600 text-white px-4 py-2 rounded"
+          >
+            Delete
           </button>
         </form>
         <button

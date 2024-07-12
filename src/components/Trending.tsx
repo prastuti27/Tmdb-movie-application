@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import Typography from "./Typography";
 import Card from "./Card";
 import WatchlistButton from "./Button";
+import { AUTH_TOKEN } from "../constants";
 
 interface Movie {
   id: number;
@@ -23,8 +24,7 @@ const MovieTrendingList: React.FC = () => {
 
       const options = {
         headers: {
-          Authorization:
-            "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiIxYjI3MTRkMTkwMzUwYzY0MTE1YTk0NTFiZTc3Y2FjMCIsIm5iZiI6MTcyMDQwNTY2Mi4xMTg1NzgsInN1YiI6IjY2ODRlMDY4YTk1MjMzM2ZkMmQxYmE3NiIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.vuHABc-MJbUjhn3TKCLT5nXywNbi6m9-Qte-hEkJoqw",
+          Authorization: `Bearer ${AUTH_TOKEN}`,
         },
       };
 

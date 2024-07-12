@@ -7,8 +7,10 @@ import MovieInfo from "../../components/MovieInfo";
 import RatingModal from "../../components/RatingModal";
 import Reviews from "../../components/Reviews";
 import { AUTH_TOKEN, API_KEY } from "../../constants";
+import WatchlistButton from "../../components/Watchlist";
 
 type Movie = {
+  id: number;
   title: string;
   poster_path: string;
   original_title: string;
@@ -41,6 +43,7 @@ const MovieDetails: React.FC = () => {
   const [error, setError] = useState<string | null>(null);
   const [showModal, setShowModal] = useState(false);
   const [rating, setRating] = useState<number>(0);
+  const [submittedRating, setSubmittedRating] = useState<number | null>(null);
 
   useEffect(() => {
     const fetchMovieDetails = async () => {
@@ -92,11 +95,49 @@ const MovieDetails: React.FC = () => {
     setRating(newRating);
   };
 
-  const handleRateSubmit = (event: React.FormEvent) => {
+  const handleRateSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
 
-    closeModal();
+    const ratingUrl = `https://api.themoviedb.org/3/movie/${id}/rating?api_key=${API_KEY}`;
+    const payload = {
+      value: rating,
+    };
+    const options = {
+      headers: {
+        Authorization: `Bearer ${AUTH_TOKEN}`,
+      },
+    };
+
+    try {
+      await axios.post(ratingUrl, payload, options);
+      setSubmittedRating(rating);
+      closeModal();
+    } catch (error) {
+      console.error("Failed to submit rating:", error);
+    }
   };
+
+  const handleDelete = async () => {
+    const deleteUrl = `https://api.themoviedb.org/3/movie/${id}/rating?api_key=${API_KEY}`;
+    const options = {
+      headers: {
+        Authorization: `Bearer ${AUTH_TOKEN}`,
+      },
+    };
+
+    try {
+      await axios.delete(deleteUrl, options);
+      setSubmittedRating(null);
+      setRating(0);
+      closeModal();
+    } catch (error) {
+      console.error("Failed to delete rating:", error);
+    }
+  };
+
+  if (error) {
+    return <div>{error}</div>;
+  }
 
   if (!movieDetails) {
     return <div>Loading...</div>;
@@ -111,10 +152,16 @@ const MovieDetails: React.FC = () => {
           overview={movieDetails.overview}
         />
       )}
-      <MovieInfo movieDetails={movieDetails} />
+
       <div className="cursor-pointer" onClick={openModal}>
         <CiStar size={30} color="gold" />
+        <MovieInfo movieDetails={movieDetails} />
       </div>
+      {submittedRating !== null && (
+        <div className="text-center mt-4">
+          <p>You rated this movie: {submittedRating}/10</p>
+        </div>
+      )}
       <RatingModal
         showModal={showModal}
         closeModal={closeModal}
@@ -123,6 +170,7 @@ const MovieDetails: React.FC = () => {
         rating={rating}
         handleRatingChange={handleRatingChange}
         handleRateSubmit={handleRateSubmit}
+        handleDelete={handleDelete} // Pass the handleDelete function to RatingModal
       />
       <Reviews reviews={reviews} />
     </div>

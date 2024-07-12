@@ -1,7 +1,7 @@
 import { useRoutes } from "react-router-dom";
 import { NAVIGATION_ROUTES } from "./routes.constant";
 import Dashboard from "src/pages/Dashboard";
-import Moviedetails from "src/pages/Moviedetails/index";
+import Moviedetails from "src/pages/Moviedetails";
 import Login from "src/pages/Auth/Login";
 
 const routes = [
