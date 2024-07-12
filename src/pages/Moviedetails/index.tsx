@@ -6,6 +6,7 @@ import Trailer from "../../components/Trailer";
 import MovieInfo from "../../components/MovieInfo";
 import RatingModal from "../../components/RatingModal";
 import Reviews from "../../components/Reviews";
+import { AUTH_TOKEN, API_KEY } from "../../constants";
 
 type Movie = {
   title: string;
@@ -43,15 +44,12 @@ const MovieDetails: React.FC = () => {
 
   useEffect(() => {
     const fetchMovieDetails = async () => {
-      const authToken = import.meta.env.VITE_AUTH_TOKEN;
-      const apiKey = import.meta.env.VITE_API_KEY;
-
-      const movieUrl = `https://api.themoviedb.org/3/movie/${id}?api_key=${apiKey}`;
-      const videoUrl = `https://api.themoviedb.org/3/movie/${id}/videos?api_key=${apiKey}`;
-      const reviewsUrl = `https://api.themoviedb.org/3/movie/${id}/reviews?api_key=${apiKey}`;
+      const movieUrl = `https://api.themoviedb.org/3/movie/${id}?api_key=${API_KEY}`;
+      const videoUrl = `https://api.themoviedb.org/3/movie/${id}/videos?api_key=${API_KEY}`;
+      const reviewsUrl = `https://api.themoviedb.org/3/movie/${id}/reviews?api_key=${API_KEY}`;
       const options = {
         headers: {
-          Authorization: `Bearer ${authToken}`,
+          Authorization: `Bearer ${AUTH_TOKEN}`,
         },
       };
 
