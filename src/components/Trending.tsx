@@ -3,6 +3,7 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import Typography from "./Typography";
 import Card from "./Card";
+import WatchlistButton from "./Button";
 
 interface Movie {
   id: number;
@@ -42,31 +43,6 @@ const MovieTrendingList: React.FC = () => {
     navigate(`/movie/${id}`);
   };
 
-  const addToWatchlist = async (movieId: number) => {
-    const [error, setError] = useState<string | null>(null);
-    const accountId = "{your_account_id}";
-    const url = `https://api.themoviedb.org/3/account/${accountId}/watchlist`;
-    const options = {
-      headers: {
-        Authorization:
-          "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiIxYjI3MTRkMTkwMzUwYzY0MTE1YTk0NTFiZTc3Y2FjMCIsIm5iZiI6MTcyMDQwNTY2Mi4xMTg1NzgsInN1YiI6IjY2ODRlMDY4YTk1MjMzM2ZkMmQxYmE3NiIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.vuHABc-MJbUjhn3TKCLT5nXywNbi6m9-Qte-hEkJoqw",
-        "Content-Type": "application/json;charset=utf-8",
-      },
-    };
-
-    const body = {
-      media_type: "movie",
-      media_id: movieId,
-      watchlist: true,
-    };
-
-    try {
-      const response = await axios.post(url, body, options);
-    } catch (error) {
-      setError("Failed to fetch movies. Please try again later.");
-    }
-  };
-
   return (
     <div>
       <Typography variant="h2" content="Trending Movies" />
@@ -82,9 +58,7 @@ const MovieTrendingList: React.FC = () => {
               image={`https://image.tmdb.org/t/p/w500${movie.backdrop_path}`}
               description={movie.overview}
             />
-            <button onClick={() => addToWatchlist(movie.id)}>
-              Add to Watchlist
-            </button>
+            <WatchlistButton movieId={movie.id} />
           </div>
         ))}
       </div>

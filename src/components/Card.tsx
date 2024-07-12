@@ -16,7 +16,6 @@ const Card: React.FC<CardProps> = ({ title, image, description }) => {
         <Typography content={title} variant="h2" />
         <Typography content={description} variant="p" />
       </div>
-      {/* <Button text="+Watchlist" /> */}
     </div>
   );
 };

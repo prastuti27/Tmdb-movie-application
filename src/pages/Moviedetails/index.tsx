@@ -1,33 +1,36 @@
 import axios from "axios";
 import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
+import { CiStar } from "react-icons/ci";
+import Trailer from "../../components/Trailer";
+import MovieInfo from "../../components/MovieInfo";
+import RatingModal from "../../components/RatingModal";
+import Reviews from "../../components/Reviews";
 
-interface Movie {
-  id: number;
+type Movie = {
   title: string;
-  backdrop_path: string;
-  overview: string;
-  genre_ids: number[];
-  original_language: string;
-  original_title: string;
-  popularity: number;
   poster_path: string;
+  original_title: string;
+  original_language: string;
   release_date: string;
+  popularity: number;
   vote_average: number;
   vote_count: number;
-}
+  genre_ids: number[];
+  overview: string;
+};
 
-interface Video {
-  key: string;
-  site: string;
-  type: string;
-}
-
-interface Review {
+type Review = {
   author: string;
   content: string;
   id: string;
-}
+};
+
+type Video = {
+  type: string;
+  site: string;
+  key: string;
+};
 
 const MovieDetails: React.FC = () => {
   const { id } = useParams<{ id: string }>();
@@ -35,6 +38,8 @@ const MovieDetails: React.FC = () => {
   const [trailer, setTrailer] = useState<string | null>(null);
   const [reviews, setReviews] = useState<Review[]>([]);
   const [error, setError] = useState<string | null>(null);
+  const [showModal, setShowModal] = useState(false);
+  const [rating, setRating] = useState<number>(0);
 
   useEffect(() => {
     const fetchMovieDetails = async () => {
@@ -77,6 +82,24 @@ const MovieDetails: React.FC = () => {
     fetchMovieDetails();
   }, [id]);
 
+  const openModal = () => {
+    setShowModal(true);
+  };
+
+  const closeModal = () => {
+    setShowModal(false);
+  };
+
+  const handleRatingChange = (newRating: number) => {
+    setRating(newRating);
+  };
+
+  const handleRateSubmit = (event: React.FormEvent) => {
+    event.preventDefault();
+
+    closeModal();
+  };
+
   if (!movieDetails) {
     return <div>Loading...</div>;
   }
@@ -84,85 +107,26 @@ const MovieDetails: React.FC = () => {
   return (
     <div>
       {trailer && (
-        <div className="">
-          <h3 className="text-2xl font-bold mb-4">Trailer</h3>
-          <div className=" flex flex-col items-center">
-            <iframe
-              src={trailer}
-              title="YouTube video player"
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-              allowFullScreen
-              className="h-[480px] w-[854px]"
-            ></iframe>
-            <div className="text-center">
-              <h2 className="text-4xl font-bold">{movieDetails.title}</h2>
-              <p className="text-lg mt-2">{movieDetails.overview}</p>
-            </div>
-          </div>
-        </div>
+        <Trailer
+          trailerUrl={trailer}
+          title={movieDetails.title}
+          overview={movieDetails.overview}
+        />
       )}
-
-      <div className="max-w-4xl mx-auto px-4 py-8">
-        <div className="flex flex-col md:flex-row">
-          {movieDetails.poster_path && (
-            <img
-              className="w-full md:w-1/3 rounded-lg mb-4 md:mb-0 md:mr-8"
-              src={`https://image.tmdb.org/t/p/w500${movieDetails.poster_path}`}
-              alt={movieDetails.title}
-            />
-          )}
-
-          <div className="md:w-2/3">
-            <h3 className="text-2xl font-bold mb-4">{movieDetails.title}</h3>
-            <ul className="mb-4">
-              <li>
-                <strong className="font-semibold">Original Title:</strong>
-                {movieDetails.original_title}
-              </li>
-              <li>
-                <strong className="font-semibold">Language:</strong>
-                {movieDetails.original_language}
-              </li>
-              <li>
-                <strong className="font-semibold">Release Date:</strong>
-                {movieDetails.release_date}
-              </li>
-              <li>
-                <strong className="font-semibold">Popularity:</strong>
-                {movieDetails.popularity}
-              </li>
-              <li>
-                <strong className="font-semibold">Vote Average:</strong>
-                {movieDetails.vote_average}
-              </li>
-              <li>
-                <strong className="font-semibold">Vote Count:</strong>
-                {movieDetails.vote_count}
-              </li>
-              <li>
-                <strong className="font-semibold">Genres:</strong>
-                {movieDetails.genre_ids + ","}
-              </li>
-            </ul>
-          </div>
-        </div>
+      <MovieInfo movieDetails={movieDetails} />
+      <div className="cursor-pointer" onClick={openModal}>
+        <CiStar size={30} color="gold" />
       </div>
-
-      <div className="max-w-4xl mx-auto px-4 py-8">
-        <h3 className="text-2xl font-bold mb-4">Reviews</h3>
-        {reviews.length > 0 ? (
-          <ul>
-            {reviews.map((review) => (
-              <li key={review.id}>
-                <h4 className="font-semibold">{review.author}</h4>
-                <p>{review.content}</p>
-              </li>
-            ))}
-          </ul>
-        ) : (
-          <p>No reviews available.</p>
-        )}
-      </div>
+      <RatingModal
+        showModal={showModal}
+        closeModal={closeModal}
+        title={movieDetails.title}
+        overview={movieDetails.overview}
+        rating={rating}
+        handleRatingChange={handleRatingChange}
+        handleRateSubmit={handleRateSubmit}
+      />
+      <Reviews reviews={reviews} />
     </div>
   );
 };
