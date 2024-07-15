@@ -1,16 +1,16 @@
 import Trending from "../../components/Trending";
-import Navbar from "../../components/Navbar";
+
 import Popular from "../../components/Popular";
-import Watchlist from "../../components/Watchlist";
+
+import WatchlistPage from "../../components/WatchlistPage";
 
 const Dashboard = () => {
   return (
-    <div>
-      <Navbar />
+    <>
       <Trending />
       <Popular />
-      <Watchlist />
-    </div>
+      <WatchlistPage />
+    </>
   );
 };
 

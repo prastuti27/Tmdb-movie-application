@@ -1,6 +1,5 @@
 import React from "react";
 import Typography from "./Typography";
-// import Button from "./Button";
 
 interface CardProps {
   title: string;

@@ -7,10 +7,10 @@ import MovieInfo from "../../components/MovieInfo";
 import RatingModal from "../../components/RatingModal";
 import Reviews from "../../components/Reviews";
 import { AUTH_TOKEN, API_KEY } from "../../constants";
-import WatchlistButton from "../../components/Watchlist";
+import WatchlistButton from "../../components/WatchlistButton";
 
 type Movie = {
-  id: number;
+  id: string;
   title: string;
   poster_path: string;
   original_title: string;
@@ -145,6 +145,22 @@ const MovieDetails: React.FC = () => {
 
   return (
     <div>
+      <WatchlistButton movieId={id} />
+      <div className="cursor-pointer fixed top-4 right-10" onClick={openModal}>
+        <p>
+          <strong>Rate</strong>
+        </p>
+        <CiStar size={50} color="gold" />
+      </div>
+
+      {submittedRating !== null && (
+        <div className="fixed top-4 right-40">
+          <p>
+            <strong>Your Rating</strong>
+          </p>
+          <p className="text-4xl"> {submittedRating}/10</p>
+        </div>
+      )}
       {trailer && (
         <Trailer
           trailerUrl={trailer}
@@ -152,16 +168,7 @@ const MovieDetails: React.FC = () => {
           overview={movieDetails.overview}
         />
       )}
-
-      <div className="cursor-pointer" onClick={openModal}>
-        <CiStar size={30} color="gold" />
-        <MovieInfo movieDetails={movieDetails} />
-      </div>
-      {submittedRating !== null && (
-        <div className="text-center mt-4">
-          <p>You rated this movie: {submittedRating}/10</p>
-        </div>
-      )}
+      <MovieInfo movieDetails={movieDetails} />
       <RatingModal
         showModal={showModal}
         closeModal={closeModal}
@@ -170,7 +177,7 @@ const MovieDetails: React.FC = () => {
         rating={rating}
         handleRatingChange={handleRatingChange}
         handleRateSubmit={handleRateSubmit}
-        handleDelete={handleDelete} // Pass the handleDelete function to RatingModal
+        handleDelete={handleDelete}
       />
       <Reviews reviews={reviews} />
     </div>

@@ -3,7 +3,7 @@ import axios from "axios";
 import { AUTH_TOKEN } from "../constants";
 
 interface WatchlistButtonProps {
-  movieId: number;
+  movieId?: string;
 }
 
 const WatchlistButton: React.FC<WatchlistButtonProps> = ({ movieId }) => {
@@ -32,7 +32,13 @@ const WatchlistButton: React.FC<WatchlistButtonProps> = ({ movieId }) => {
     }
   };
 
-  return <button onClick={addToWatchlist}>Add to Watchlist</button>;
+  return (
+    <div className="w-full flex justify-end">
+      <button className="bg-gray-700 p-5 mr-5" onClick={addToWatchlist}>
+        + Add to Watchlist
+      </button>
+    </div>
+  );
 };
 
 export default WatchlistButton;

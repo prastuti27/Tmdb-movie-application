@@ -3,7 +3,6 @@ import axios from "axios";
 import Typography from "./Typography";
 import Card from "./Card";
 import { AUTH_TOKEN } from "../constants";
-import WatchlistButton from "./Button";
 
 import { useNavigate } from "react-router-dom";
 
@@ -58,7 +57,6 @@ const MovieTrendingList: React.FC = () => {
               image={`https://image.tmdb.org/t/p/w500${movie.backdrop_path}`}
               description={movie.overview}
             />
-            <WatchlistButton movieId={movie.id} />
           </div>
         ))}
       </div>

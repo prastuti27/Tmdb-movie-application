@@ -11,7 +11,7 @@ interface Movie {
   overview: string;
 }
 
-const Watchlist: React.FC = () => {
+const WatchlistPage: React.FC = () => {
   const [watchlist, setWatchlist] = useState<Movie[]>([]);
   const [error, setError] = useState<string | null>(null);
 
@@ -55,4 +55,4 @@ const Watchlist: React.FC = () => {
   );
 };
 
-export default Watchlist;
+export default WatchlistPage;
