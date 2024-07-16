@@ -13,7 +13,7 @@ interface Movie {
   overview: string;
 }
 
-const MovieTrendingList: React.FC = () => {
+const MovieTrendingList = () => {
   const [movies, setMovies] = useState<Movie[]>([]);
   const [error, setError] = useState<string | null>(null);
   const navigate = useNavigate();

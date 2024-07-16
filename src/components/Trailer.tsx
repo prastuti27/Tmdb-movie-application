@@ -1,12 +1,10 @@
-import React from "react";
-
 interface TrailerProps {
   trailerUrl: string;
   title: string;
   overview: string;
 }
 
-const Trailer: React.FC<TrailerProps> = ({ trailerUrl, title, overview }) => (
+const Trailer = ({ trailerUrl, title, overview }: TrailerProps) => (
   <div>
     <h3 className="text-2xl font-bold mb-4">Trailer</h3>
     <div className="flex flex-col items-center">

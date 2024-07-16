@@ -1,4 +1,3 @@
-import React from "react";
 import Typography from "./Typography";
 
 interface CardProps {
@@ -7,7 +6,7 @@ interface CardProps {
   description: string;
 }
 
-const Card: React.FC<CardProps> = ({ title, image, description }) => {
+const Card = ({ title, image, description }: CardProps) => {
   return (
     <div className="rounded-lg shadow-md overflow-hidden transform transition-transform duration-200 hover:scale-105">
       <img className="w-full h-auto" src={image} alt={title} />

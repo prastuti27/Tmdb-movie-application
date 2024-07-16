@@ -1,20 +1,4 @@
-import React from "react";
-
-interface MovieInfoProps {
-  movieDetails: {
-    title: string;
-    poster_path: string;
-    original_title: string;
-    original_language: string;
-    release_date: string;
-    popularity: number;
-    vote_average: number;
-    vote_count: number;
-    genre_ids: number[];
-  };
-}
-
-const MovieInfo: React.FC<MovieInfoProps> = ({ movieDetails }) => (
+const MovieInfo = ({ movieDetails }: MovieInfoProps) => (
   <div className="max-w-4xl mx-auto px-4 py-8">
     <div className="flex flex-col md:flex-row">
       {movieDetails.poster_path && (

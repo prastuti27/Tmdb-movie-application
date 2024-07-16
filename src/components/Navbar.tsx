@@ -1,4 +1,4 @@
-import React, { useState, KeyboardEvent } from "react";
+import React, { useState, KeyboardEvent, ChangeEvent } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import logoSvg from "../assets/svgs/logo.svg";
@@ -11,7 +11,7 @@ interface MovieResult {
   poster_path: string;
 }
 
-const Navbar: React.FC = () => {
+const Navbar = () => {
   const [query, setQuery] = useState<string>("");
   const [results, setResults] = useState<MovieResult[]>([]);
   const navigate = useNavigate();
@@ -21,13 +21,32 @@ const Navbar: React.FC = () => {
       const url = `https://api.themoviedb.org/3/search/movie?api_key=${API_KEY}&query=${query}`;
 
       try {
-        const response = await axios.get(url);
+        const response = await axios.get<{ results: MovieResult[] }>(url);
         setResults(response.data.results);
         navigate("/search-results", { state: response.data.results });
       } catch (error) {
         console.error("Error fetching search results:", error);
       }
     }
+  };
+
+  const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
+    setQuery(event.target.value);
+  };
+
+  const handleLogout = () => {
+    localStorage.removeItem("tmdb_session_id");
+
+    axios.delete(
+      `https://api.themoviedb.org/3/authentication/session?api_key=${API_KEY}`,
+      {
+        data: {
+          session_id: localStorage.getItem("tmdb_session_id"),
+        },
+      }
+    );
+
+    navigate("/login");
   };
 
   return (
@@ -38,11 +57,14 @@ const Navbar: React.FC = () => {
       <input
         type="text"
         value={query}
-        onChange={(e) => setQuery(e.target.value)}
+        onChange={handleChange}
         onKeyDown={handleSearch}
         placeholder="Search"
         className="px-3 py-1 w-1/2 bg-white rounded-md text-gray-800 placeholder-gray-500 focus:outline-none"
       />
+      <button onClick={handleLogout} className="text-white hover:text-gray-300">
+        Logout
+      </button>
     </div>
   );
 };

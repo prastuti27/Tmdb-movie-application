@@ -1,6 +1,7 @@
 import React from "react";
 import { CiStar } from "react-icons/ci";
-
+import Typography from "./Typography";
+import { IoCloseCircle } from "react-icons/io5";
 interface RatingModalProps {
   showModal: boolean;
   closeModal: () => void;
@@ -12,7 +13,7 @@ interface RatingModalProps {
   handleDelete: () => void;
 }
 
-const RatingModal: React.FC<RatingModalProps> = ({
+const RatingModal = ({
   showModal,
   closeModal,
   title,
@@ -21,16 +22,17 @@ const RatingModal: React.FC<RatingModalProps> = ({
   handleRatingChange,
   handleRateSubmit,
   handleDelete,
-}) => {
+}: RatingModalProps) => {
   if (!showModal) return null;
 
   return (
     <div className="fixed top-0 left-0 w-full h-full bg-black bg-opacity-50 flex justify-center items-center">
-      <div className="bg-white rounded-lg p-8 max-w-md w-full relative">
-        <h2 className="text-black text-center mb-4">{title}</h2>
-        <p className="text-black text-center mb-4">{overview}</p>
+      <div className="bg-white bg-opacity-80 rounded-lg p-8 max-w-md w-full relative">
+        <Typography content={title} variant="h2" />
+        <Typography content={overview} variant="p" />
+
         <form onSubmit={handleRateSubmit} className="text-center">
-          <h3 className="text-black mb-4">Rate This</h3>
+          <Typography content="Rate This" variant="h3" />
           <div className="flex justify-center mb-4">
             {[...Array(10)].map((_, index) => (
               <label key={index} className="cursor-pointer">
@@ -65,9 +67,9 @@ const RatingModal: React.FC<RatingModalProps> = ({
         </form>
         <button
           onClick={closeModal}
-          className="absolute top-4 right-4 text-gray-600 hover:text-gray-900"
+          className="absolute top-4 right-4 text-red-600 hover:text-red-900"
         >
-          Close
+          <IoCloseCircle size={24} />
         </button>
       </div>
     </div>

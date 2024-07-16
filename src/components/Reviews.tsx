@@ -1,4 +1,4 @@
-import React from "react";
+import Typography from "./Typography";
 
 interface Review {
   author: string;
@@ -10,14 +10,15 @@ interface ReviewsProps {
   reviews: Review[];
 }
 
-const Reviews: React.FC<ReviewsProps> = ({ reviews }) => (
+const Reviews = ({ reviews }: ReviewsProps) => (
   <div className="max-w-4xl mx-auto px-4 py-8">
     <h3 className="text-2xl font-bold mb-4">Reviews</h3>
     {reviews.length > 0 ? (
       <ul>
         {reviews.map((review) => (
           <li key={review.id}>
-            <h4 className="font-semibold">{review.author}</h4>
+            <Typography content={review.author} variant="h3" />
+
             <p>{review.content}</p>
           </li>
         ))}

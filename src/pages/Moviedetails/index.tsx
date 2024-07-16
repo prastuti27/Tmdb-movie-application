@@ -9,33 +9,7 @@ import Reviews from "../../components/Reviews";
 import { AUTH_TOKEN, API_KEY } from "../../constants";
 import WatchlistButton from "../../components/WatchlistButton";
 
-type Movie = {
-  id: string;
-  title: string;
-  poster_path: string;
-  original_title: string;
-  original_language: string;
-  release_date: string;
-  popularity: number;
-  vote_average: number;
-  vote_count: number;
-  genre_ids: number[];
-  overview: string;
-};
-
-type Review = {
-  author: string;
-  content: string;
-  id: string;
-};
-
-type Video = {
-  type: string;
-  site: string;
-  key: string;
-};
-
-const MovieDetails: React.FC = () => {
+const MovieDetails = () => {
   const { id } = useParams<{ id: string }>();
   const [movieDetails, setMovieDetails] = useState<Movie | null>(null);
   const [trailer, setTrailer] = useState<string | null>(null);
@@ -83,12 +57,8 @@ const MovieDetails: React.FC = () => {
     fetchMovieDetails();
   }, [id]);
 
-  const openModal = () => {
-    setShowModal(true);
-  };
-
-  const closeModal = () => {
-    setShowModal(false);
+  const toggleModal = () => {
+    setShowModal(!showModal);
   };
 
   const handleRatingChange = (newRating: number) => {
@@ -111,7 +81,7 @@ const MovieDetails: React.FC = () => {
     try {
       await axios.post(ratingUrl, payload, options);
       setSubmittedRating(rating);
-      closeModal();
+      toggleModal();
     } catch (error) {
       console.error("Failed to submit rating:", error);
     }
@@ -129,7 +99,7 @@ const MovieDetails: React.FC = () => {
       await axios.delete(deleteUrl, options);
       setSubmittedRating(null);
       setRating(0);
-      closeModal();
+      toggleModal(); // Close modal after successful delete
     } catch (error) {
       console.error("Failed to delete rating:", error);
     }
@@ -144,23 +114,28 @@ const MovieDetails: React.FC = () => {
   }
 
   return (
-    <div>
-      <WatchlistButton movieId={id} />
-      <div className="cursor-pointer fixed top-4 right-10" onClick={openModal}>
-        <p>
-          <strong>Rate</strong>
-        </p>
-        <CiStar size={50} color="gold" />
+    <div className="">
+      <div className="flex flex-row justify-end gap-3">
+        <div>
+          <WatchlistButton movieId={id} />
+        </div>
+
+        <div className="cursor-pointer   " onClick={toggleModal}>
+          <p>
+            <strong>Rate</strong>
+          </p>
+          <CiStar size={50} color="gold" />
+        </div>
+        {submittedRating !== null && (
+          <div className=" ">
+            <p>
+              <strong>Your Rating</strong>
+            </p>
+            <p className="text-4xl"> {submittedRating}/10</p>
+          </div>
+        )}
       </div>
 
-      {submittedRating !== null && (
-        <div className="fixed top-4 right-40">
-          <p>
-            <strong>Your Rating</strong>
-          </p>
-          <p className="text-4xl"> {submittedRating}/10</p>
-        </div>
-      )}
       {trailer && (
         <Trailer
           trailerUrl={trailer}
@@ -171,7 +146,7 @@ const MovieDetails: React.FC = () => {
       <MovieInfo movieDetails={movieDetails} />
       <RatingModal
         showModal={showModal}
-        closeModal={closeModal}
+        closeModal={toggleModal}
         title={movieDetails.title}
         overview={movieDetails.overview}
         rating={rating}

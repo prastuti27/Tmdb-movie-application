@@ -13,8 +13,9 @@ interface Movie {
   overview: string;
 }
 
-const MovieTrendingList: React.FC = () => {
+const MovieTrendingList = () => {
   const [movies, setMovies] = useState<Movie[]>([]);
+  const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
   const navigate = useNavigate();
 
@@ -33,6 +34,8 @@ const MovieTrendingList: React.FC = () => {
         setMovies(response.data.results);
       } catch (error) {
         setError("Failed to fetch movies. Please try again later.");
+      } finally {
+        setLoading(false);
       }
     };
 
@@ -46,21 +49,31 @@ const MovieTrendingList: React.FC = () => {
   return (
     <div>
       <Typography variant="h2" content="Trending Movies" />
-      {error && <p>{error}</p>}
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-        {movies.map((movie) => (
-          <div
-            key={movie.id}
-            onClick={() => handleCardClick(movie.id.toString())}
-          >
-            <Card
-              title={movie.title}
-              image={`https://image.tmdb.org/t/p/w500${movie.backdrop_path}`}
-              description={movie.overview}
-            />
-          </div>
-        ))}
-      </div>
+      {loading ? (
+        <div className="flex justify-center items-center h-64">
+          <div className="w-8 h-8 border-4 border-dashed rounded-full animate-spin border-blue-500"></div>
+        </div>
+      ) : error ? (
+        <div className="text-center text-red-600">
+          <p>{error}</p>
+        </div>
+      ) : (
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+          {movies.map((movie) => (
+            <div
+              key={movie.id}
+              onClick={() => handleCardClick(movie.id.toString())}
+              className="cursor-pointer"
+            >
+              <Card
+                title={movie.title}
+                image={`https://image.tmdb.org/t/p/w500${movie.backdrop_path}`}
+                description={movie.overview}
+              />
+            </div>
+          ))}
+        </div>
+      )}
     </div>
   );
 };

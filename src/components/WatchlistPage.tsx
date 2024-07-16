@@ -11,7 +11,7 @@ interface Movie {
   overview: string;
 }
 
-const WatchlistPage: React.FC = () => {
+const WatchlistPage = () => {
   const [watchlist, setWatchlist] = useState<Movie[]>([]);
   const [error, setError] = useState<string | null>(null);
 

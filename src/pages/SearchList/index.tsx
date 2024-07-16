@@ -1,8 +1,6 @@
-import React from "react";
 import { useLocation } from "react-router-dom";
-import Typography from "../../components/Typography";
 import { useNavigate } from "react-router-dom";
-import Card from "../../components/Card"; // Import your Card component here
+import Card from "../../components/Card";
 
 interface MovieResult {
   id: number;
@@ -11,7 +9,7 @@ interface MovieResult {
   poster_path: string;
 }
 
-const SearchList: React.FC = () => {
+const SearchList = () => {
   const location = useLocation();
   const results = location.state as MovieResult[];
   const navigate = useNavigate();

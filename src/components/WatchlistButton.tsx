@@ -6,7 +6,7 @@ interface WatchlistButtonProps {
   movieId?: string;
 }
 
-const WatchlistButton: React.FC<WatchlistButtonProps> = ({ movieId }) => {
+const WatchlistButton = ({ movieId }: WatchlistButtonProps) => {
   const [error, setError] = useState<string | null>(null);
 
   const addToWatchlist = async () => {
