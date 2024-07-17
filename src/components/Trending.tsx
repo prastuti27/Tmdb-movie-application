@@ -1,10 +1,9 @@
-import React, { useState, useEffect } from "react";
-import axios from "axios";
-import { useNavigate } from "react-router-dom";
 import Typography from "./Typography";
 import Card from "./Card";
-
-import { AUTH_TOKEN } from "../constants";
+import { useNavigate } from "react-router-dom";
+import useApiCall from "../Hooks/useApiCall";
+import ErrorMessage from "./Error";
+import Loader from "./Loader";
 
 interface Movie {
   id: number;
@@ -14,56 +13,33 @@ interface Movie {
 }
 
 const MovieTrendingList = () => {
-  const [movies, setMovies] = useState<Movie[]>([]);
-  const [loading, setLoading] = useState<boolean>(true);
-  const [error, setError] = useState<string | null>(null);
+  const {
+    data: movies,
+    error,
+    loading,
+  } = useApiCall<{ results: Movie[] }>("/movie/popular?page=1");
   const navigate = useNavigate();
-
-  useEffect(() => {
-    const fetchMovies = async () => {
-      const url = "https://api.themoviedb.org/3/movie/popular?page=1";
-
-      const options = {
-        headers: {
-          Authorization: `Bearer ${AUTH_TOKEN}`,
-        },
-      };
-
-      try {
-        const response = await axios.get(url, options);
-        setMovies(response.data.results);
-      } catch (error) {
-        setError("Failed to fetch movies. Please try again later.");
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchMovies();
-  }, []);
 
   const handleCardClick = (id: string) => {
     navigate(`/movie/${id}`);
   };
-
+  if (loading) return <Loader />;
+  if (error)
+    return (
+      <ErrorMessage message="Failed to load movies. Please try again later." />
+    );
   return (
     <div>
-      <Typography variant="h2" content="Trending Movies" />
+      <Typography variant="h2" content="Popular Movies" />
+      {error && <p>{error}</p>}
       {loading ? (
-        <div className="flex justify-center items-center h-64">
-          <div className="w-8 h-8 border-4 border-dashed rounded-full animate-spin border-blue-500"></div>
-        </div>
-      ) : error ? (
-        <div className="text-center text-red-600">
-          <p>{error}</p>
-        </div>
+        <p>Loading...</p>
       ) : (
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-          {movies.map((movie) => (
+          {movies?.results.map((movie) => (
             <div
               key={movie.id}
               onClick={() => handleCardClick(movie.id.toString())}
-              className="cursor-pointer"
             >
               <Card
                 title={movie.title}

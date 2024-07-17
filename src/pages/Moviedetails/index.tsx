@@ -1,61 +1,54 @@
-import axios from "axios";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useParams } from "react-router-dom";
 import { CiStar } from "react-icons/ci";
 import Trailer from "../../components/Trailer";
 import MovieInfo from "../../components/MovieInfo";
 import RatingModal from "../../components/RatingModal";
 import Reviews from "../../components/Reviews";
-import { AUTH_TOKEN, API_KEY } from "../../constants";
 import WatchlistButton from "../../components/WatchlistButton";
+import { Movie, Review, Video } from "../../types";
+import useApiCall from "../../Hooks/useApiCall";
+import Loader from "../../components/Loader";
+import ErrorMessage from "../../components/Error";
+import { API_KEY } from "../../constants";
 
 const MovieDetails = () => {
   const { id } = useParams<{ id: string }>();
-  const [movieDetails, setMovieDetails] = useState<Movie | null>(null);
-  const [trailer, setTrailer] = useState<string | null>(null);
-  const [reviews, setReviews] = useState<Review[]>([]);
-  const [error, setError] = useState<string | null>(null);
   const [showModal, setShowModal] = useState(false);
   const [rating, setRating] = useState<number>(0);
   const [submittedRating, setSubmittedRating] = useState<number | null>(null);
 
-  useEffect(() => {
-    const fetchMovieDetails = async () => {
-      const movieUrl = `https://api.themoviedb.org/3/movie/${id}?api_key=${API_KEY}`;
-      const videoUrl = `https://api.themoviedb.org/3/movie/${id}/videos?api_key=${API_KEY}`;
-      const reviewsUrl = `https://api.themoviedb.org/3/movie/${id}/reviews?api_key=${API_KEY}`;
-      const options = {
-        headers: {
-          Authorization: `Bearer ${AUTH_TOKEN}`,
-        },
-      };
+  const movieDetailsEndpoint = `/movie/${id}?api_key=${API_KEY}`;
+  const videoEndpoint = `/movie/${id}/videos?api_key=${API_KEY}`;
+  const reviewsEndpoint = `/movie/${id}/reviews?api_key=${API_KEY}`;
+  const ratingEndpoint = `/movie/${id}/rating?api_key=${API_KEY}`;
 
-      try {
-        const [movieResponse, videoResponse, reviewsResponse] =
-          await Promise.all([
-            axios.get(movieUrl, options),
-            axios.get(videoUrl, options),
-            axios.get(reviewsUrl, options),
-          ]);
+  const {
+    data: movieDetails,
+    error: movieError,
+    loading: movieLoading,
+  } = useApiCall<Movie>(movieDetailsEndpoint);
+  const {
+    data: videoData,
+    error: videoError,
+    loading: videoLoading,
+  } = useApiCall<{ results: Video[] }>(videoEndpoint);
+  const {
+    data: reviews,
+    error: reviewsError,
+    loading: reviewsLoading,
+  } = useApiCall<{ results: Review[] }>(reviewsEndpoint);
+  const { postData: postRating, deleteData: deleteRating } = useApiCall<{
+    value: number;
+  }>(ratingEndpoint, "POST");
 
-        setMovieDetails(movieResponse.data);
+  const trailer = videoData?.results.find(
+    (video: Video) => video.type === "Trailer" && video.site === "YouTube"
+  )?.key;
 
-        const trailerVideo = videoResponse.data.results.find(
-          (video: Video) => video.type === "Trailer" && video.site === "YouTube"
-        );
-
-        if (trailerVideo) {
-          setTrailer(`https://www.youtube.com/embed/${trailerVideo.key}`);
-        }
-
-        setReviews(reviewsResponse.data.results);
-      } catch (error) {
-        setError("Failed to fetch movie details. Please try again later.");
-      }
-    };
-
-    fetchMovieDetails();
-  }, [id]);
+  const trailerUrl = trailer
+    ? `https://www.youtube.com/embed/${trailer}`
+    : null;
 
   const toggleModal = () => {
     setShowModal(!showModal);
@@ -67,19 +60,8 @@ const MovieDetails = () => {
 
   const handleRateSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
-
-    const ratingUrl = `https://api.themoviedb.org/3/movie/${id}/rating?api_key=${API_KEY}`;
-    const payload = {
-      value: rating,
-    };
-    const options = {
-      headers: {
-        Authorization: `Bearer ${AUTH_TOKEN}`,
-      },
-    };
-
     try {
-      await axios.post(ratingUrl, payload, options);
+      await postRating?.({ value: rating });
       setSubmittedRating(rating);
       toggleModal();
     } catch (error) {
@@ -88,57 +70,54 @@ const MovieDetails = () => {
   };
 
   const handleDelete = async () => {
-    const deleteUrl = `https://api.themoviedb.org/3/movie/${id}/rating?api_key=${API_KEY}`;
-    const options = {
-      headers: {
-        Authorization: `Bearer ${AUTH_TOKEN}`,
-      },
-    };
-
     try {
-      await axios.delete(deleteUrl, options);
-      setSubmittedRating(null);
-      setRating(0);
-      toggleModal(); // Close modal after successful delete
+      if (deleteRating) {
+        await deleteRating();
+        setSubmittedRating(null);
+        setRating(0);
+        toggleModal();
+      }
     } catch (error) {
       console.error("Failed to delete rating:", error);
     }
   };
 
-  if (error) {
-    return <div>{error}</div>;
+  if (movieError || videoError || reviewsError) {
+    return (
+      <ErrorMessage message="Failed to load movies. Please try again later." />
+    );
   }
 
-  if (!movieDetails) {
-    return <div>Loading...</div>;
+  if (movieLoading || videoLoading || reviewsLoading || !movieDetails) {
+    return <Loader />;
   }
 
   return (
-    <div className="">
+    <div>
       <div className="flex flex-row justify-end gap-3">
         <div>
           <WatchlistButton movieId={id} />
         </div>
 
-        <div className="cursor-pointer   " onClick={toggleModal}>
+        <div className="cursor-pointer" onClick={toggleModal}>
           <p>
             <strong>Rate</strong>
           </p>
           <CiStar size={50} color="gold" />
         </div>
         {submittedRating !== null && (
-          <div className=" ">
+          <div>
             <p>
               <strong>Your Rating</strong>
             </p>
-            <p className="text-4xl"> {submittedRating}/10</p>
+            <p className="text-4xl">{submittedRating}/10</p>
           </div>
         )}
       </div>
 
-      {trailer && (
+      {trailerUrl && (
         <Trailer
-          trailerUrl={trailer}
+          trailerUrl={trailerUrl}
           title={movieDetails.title}
           overview={movieDetails.overview}
         />
@@ -154,7 +133,7 @@ const MovieDetails = () => {
         handleRateSubmit={handleRateSubmit}
         handleDelete={handleDelete}
       />
-      <Reviews reviews={reviews} />
+      <Reviews reviews={reviews?.results ?? []} />
     </div>
   );
 };

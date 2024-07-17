@@ -18,12 +18,13 @@ const Navbar = () => {
 
   const handleSearch = async (event: KeyboardEvent<HTMLInputElement>) => {
     if (event.key === "Enter") {
-      const url = `https://api.themoviedb.org/3/search/movie?api_key=${API_KEY}&query=${query}`;
-
       try {
+        const url = `https://api.themoviedb.org/3/search/movie?api_key=${API_KEY}&query=${query}`;
         const response = await axios.get<{ results: MovieResult[] }>(url);
         setResults(response.data.results);
-        navigate("/search-results", { state: response.data.results });
+        navigate("/search-results", {
+          state: { results: response.data.results },
+        });
       } catch (error) {
         console.error("Error fetching search results:", error);
       }
@@ -34,19 +35,29 @@ const Navbar = () => {
     setQuery(event.target.value);
   };
 
-  const handleLogout = () => {
-    localStorage.removeItem("tmdb_session_id");
+  const handleLogout = async () => {
+    const sessionId = localStorage.getItem("tmdb_session_id");
 
-    axios.delete(
-      `https://api.themoviedb.org/3/authentication/session?api_key=${API_KEY}`,
-      {
-        data: {
-          session_id: localStorage.getItem("tmdb_session_id"),
-        },
-      }
-    );
+    if (!sessionId) {
+      console.error("No session ID found in localStorage.");
+      return;
+    }
 
-    navigate("/login");
+    try {
+      await axios.delete(
+        `https://api.themoviedb.org/3/authentication/session?api_key=${API_KEY}`,
+        {
+          data: {
+            session_id: sessionId,
+          },
+        }
+      );
+      localStorage.removeItem("tmdb_session_id");
+      navigate("/login");
+    } catch (error) {
+      console.error("Error logging out:", error);
+      // Handle error gracefully, e.g., show a message to the user
+    }
   };
 
   return (

@@ -18,7 +18,6 @@ const Reviews = ({ reviews }: ReviewsProps) => (
         {reviews.map((review) => (
           <li key={review.id}>
             <Typography content={review.author} variant="h3" />
-
             <p>{review.content}</p>
           </li>
         ))}

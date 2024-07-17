@@ -1,5 +1,5 @@
-import { useLocation } from "react-router-dom";
-import { useNavigate } from "react-router-dom";
+import React from "react";
+import { useLocation, useNavigate } from "react-router-dom";
 import Card from "../../components/Card";
 
 interface MovieResult {
@@ -11,7 +11,8 @@ interface MovieResult {
 
 const SearchList = () => {
   const location = useLocation();
-  const results = location.state as MovieResult[];
+  const results =
+    (location.state as { results: MovieResult[] } | undefined)?.results || []; // Initialize results with an empty array
   const navigate = useNavigate();
 
   const handleCardClick = (id: string) => {

@@ -2,6 +2,7 @@ import React from "react";
 import { CiStar } from "react-icons/ci";
 import Typography from "./Typography";
 import { IoCloseCircle } from "react-icons/io5";
+
 interface RatingModalProps {
   showModal: boolean;
   closeModal: () => void;
@@ -13,7 +14,7 @@ interface RatingModalProps {
   handleDelete: () => void;
 }
 
-const RatingModal = ({
+const RatingModal: React.FC<RatingModalProps> = ({
   showModal,
   closeModal,
   title,
@@ -34,22 +35,31 @@ const RatingModal = ({
         <form onSubmit={handleRateSubmit} className="text-center">
           <Typography content="Rate This" variant="h3" />
           <div className="flex justify-center mb-4">
-            {[...Array(10)].map((_, index) => (
-              <label key={index} className="cursor-pointer">
-                <input
-                  type="radio"
-                  name="rating"
-                  value={index + 1}
-                  checked={rating === index + 1}
-                  onChange={() => handleRatingChange(index + 1)}
-                  className="hidden"
-                />
-                <CiStar
-                  size={30}
-                  color={rating >= index + 1 ? "gold" : "gray"}
-                />
-              </label>
-            ))}
+            {[...Array(10)].map((_, index) => {
+              const ratingValue = index + 1;
+              return (
+                <div key={`rating-${ratingValue}`} className="cursor-pointer">
+                  <input
+                    type="radio"
+                    id={`rating-${ratingValue}`}
+                    name="rating"
+                    value={ratingValue}
+                    checked={rating === ratingValue}
+                    onChange={() => handleRatingChange(ratingValue)}
+                    className="hidden"
+                  />
+                  <label
+                    htmlFor={`rating-${ratingValue}`}
+                    className="block cursor-pointer"
+                  >
+                    <CiStar
+                      size={30}
+                      color={rating >= ratingValue ? "gold" : "gray"}
+                    />
+                  </label>
+                </div>
+              );
+            })}
           </div>
           <button
             type="submit"

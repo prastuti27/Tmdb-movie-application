@@ -34,7 +34,10 @@ const WatchlistButton = ({ movieId }: WatchlistButtonProps) => {
 
   return (
     <div className="w-full flex justify-end">
-      <button className="bg-gray-700 p-5 mr-5" onClick={addToWatchlist}>
+      <button
+        className="bg-gray-700 p-3 mr-5 mt-5 font-semibold rounded-2xl"
+        onClick={addToWatchlist}
+      >
         + Add to Watchlist
       </button>
     </div>
