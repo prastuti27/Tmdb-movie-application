@@ -15,7 +15,7 @@ interface RatingModalProps {
   handleDelete: () => void;
 }
 
-const RatingModal: React.FC<RatingModalProps> = ({
+const RatingModal = ({
   showModal,
   closeModal,
   title,

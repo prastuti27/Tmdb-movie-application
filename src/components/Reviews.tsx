@@ -1,4 +1,3 @@
-import React from "react";
 import Typography from "./Typography";
 
 interface Review {
@@ -11,7 +10,7 @@ interface ReviewsProps {
   reviews: Review[];
 }
 
-const Reviews: React.FC<ReviewsProps> = ({ reviews }) => (
+const Reviews = ({ reviews }: ReviewsProps) => (
   <div className="max-w-4xl mx-auto px-4 py-8">
     <Typography content="Reviews" variant="h3" />
     {/* eslint-disable-next-line no-extra-boolean-cast */}

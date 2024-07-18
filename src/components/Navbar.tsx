@@ -3,6 +3,7 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import logoSvg from "../assets/svgs/logo.svg";
 import { API_KEY } from "../constants";
+import Button from "./Button";
 
 interface MovieResult {
   id: number;
@@ -56,7 +57,6 @@ const Navbar = () => {
       navigate("/login");
     } catch (error) {
       console.error("Error logging out:", error);
-      // Handle error gracefully, e.g., show a message to the user
     }
   };
 
@@ -73,9 +73,11 @@ const Navbar = () => {
         placeholder="Search"
         className="px-3 py-1 w-1/2 bg-white rounded-md text-gray-800 placeholder-gray-500 focus:outline-none"
       />
-      <button onClick={handleLogout} className="text-white hover:text-gray-300">
-        Logout
-      </button>
+      <Button
+        text="Logout"
+        onClick={handleLogout}
+        className="text-white hover:text-gray-300"
+      />
     </div>
   );
 };

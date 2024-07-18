@@ -1,3 +1,5 @@
+import Typography from "./Typography";
+
 interface MovieInfoProps {
   movieDetails: {
     title: string;
@@ -46,7 +48,7 @@ const MovieInfo = ({ movieDetails }: MovieInfoProps) => {
           />
         )}
         <div className="md:w-2/3">
-          <h3 className="text-2xl font-bold mb-4">{title}</h3>
+          <Typography content={title} variant="h3" />
           <ul className="mb-4">
             {details.map((detail) => (
               <li key={detail.label}>

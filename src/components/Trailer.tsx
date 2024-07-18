@@ -1,3 +1,5 @@
+import Typography from "./Typography";
+
 interface TrailerProps {
   trailerUrl: string;
   title: string;
@@ -16,8 +18,8 @@ const Trailer = ({ trailerUrl, title, overview }: TrailerProps) => (
         className="h-[480px] w-[854px]"
       ></iframe>
       <div className="text-center">
-        <h2 className="text-4xl font-bold">{title}</h2>
-        <p className="text-lg mt-2">{overview}</p>
+        <Typography content={title} variant="h2" />
+        <Typography content={overview} variant="p" />
       </div>
     </div>
   </div>
