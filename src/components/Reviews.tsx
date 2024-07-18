@@ -1,3 +1,4 @@
+import React from "react";
 import Typography from "./Typography";
 
 interface Review {
@@ -10,20 +11,21 @@ interface ReviewsProps {
   reviews: Review[];
 }
 
-const Reviews = ({ reviews }: ReviewsProps) => (
+const Reviews: React.FC<ReviewsProps> = ({ reviews }) => (
   <div className="max-w-4xl mx-auto px-4 py-8">
-    <h3 className="text-2xl font-bold mb-4">Reviews</h3>
-    {reviews.length > 0 ? (
+    <Typography content="Reviews" variant="h3" />
+    {/* eslint-disable-next-line no-extra-boolean-cast */}
+    {!!reviews.length ? (
       <ul>
         {reviews.map((review) => (
           <li key={review.id}>
             <Typography content={review.author} variant="h3" />
-            <p>{review.content}</p>
+            <Typography content={review.content} variant="p" />
           </li>
         ))}
       </ul>
     ) : (
-      <p>No reviews available.</p>
+      <Typography content="No Reviews Available" variant="p" />
     )}
   </div>
 );

@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import axios from "axios";
 import { AUTH_TOKEN } from "../constants";
+import Button from "./Button";
 
 interface WatchlistButtonProps {
   movieId?: string;
@@ -34,12 +35,12 @@ const WatchlistButton = ({ movieId }: WatchlistButtonProps) => {
 
   return (
     <div className="w-full flex justify-end">
-      <button
-        className="bg-gray-700 p-3 mr-5 mt-5 font-semibold rounded-2xl"
+      <Button
+        text="+ Add to Watchlist"
         onClick={addToWatchlist}
-      >
-        + Add to Watchlist
-      </button>
+        className="bg-gray-700 p-3 mr-5 mt-5 font-semibold rounded-2xl"
+      />
+      {error && <p>{error}</p>}
     </div>
   );
 };

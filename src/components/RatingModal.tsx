@@ -2,6 +2,7 @@ import React from "react";
 import { CiStar } from "react-icons/ci";
 import Typography from "./Typography";
 import { IoCloseCircle } from "react-icons/io5";
+import Button from "./Button";
 
 interface RatingModalProps {
   showModal: boolean;
@@ -61,19 +62,16 @@ const RatingModal: React.FC<RatingModalProps> = ({
               );
             })}
           </div>
-          <button
-            type="submit"
+          <Button
+            text="Rate"
+            onClick={handleRateSubmit as any}
             className="bg-gray-700 text-white px-4 py-2 rounded mr-2"
-          >
-            Rate
-          </button>
-          <button
-            type="button"
+          />
+          <Button
+            text="Delete"
             onClick={handleDelete}
             className="bg-red-600 text-white px-4 py-2 rounded"
-          >
-            Delete
-          </button>
+          />
         </form>
         <button
           onClick={closeModal}
