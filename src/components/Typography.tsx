@@ -7,10 +7,10 @@ type TypographyType = {
   children?: React.ReactNode;
 };
 const defaultClassNames = {
-  h1: "text-purple-dark text-start text-5xl font-semibold",
-  h2: "text-sky-600 text-3xl font-bold mb-6 mt-6",
-  h3: "text-lg text-4xl semi-bold ",
-  p: "text-sm text-gray-600",
+  h1: "text-purple-dark text-start text-5xl font-semibold font-lexend",
+  h2: "text-primary text-3xl font-bold mb-6 mt-6 font-lexend",
+  h3: "text-lg text-4xl semi-bold font-lexend",
+  p: "text-sm text-white font-lexend",
 };
 const Typography = ({
   variant = "p",

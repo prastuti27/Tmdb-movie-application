@@ -38,7 +38,7 @@ const WatchlistButton = ({ movieId }: WatchlistButtonProps) => {
       <Button
         text="+ Add to Watchlist"
         onClick={addToWatchlist}
-        className="bg-gray-700 p-3 mr-5 mt-5 font-semibold rounded-2xl"
+        className="bg-primary p-3 mr-5 mt-5 text-gray-800 font-bold rounded-2xl"
       />
       {error && <p>{error}</p>}
     </div>

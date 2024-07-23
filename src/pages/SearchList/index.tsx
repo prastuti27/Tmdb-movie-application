@@ -4,7 +4,8 @@ import Card from "../../components/Card";
 interface MovieResult {
   id: number;
   title: string;
-  overview: string;
+  release_date: string;
+
   poster_path: string;
 }
 
@@ -29,7 +30,7 @@ const SearchList = () => {
           <Card
             title={movie.title}
             image={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}
-            description={movie.overview}
+            releaseDate={movie.release_date}
           />
         </div>
       ))}
