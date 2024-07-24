@@ -1,4 +1,4 @@
-import React, { useState, KeyboardEvent, ChangeEvent } from "react";
+import { useState, KeyboardEvent, ChangeEvent } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import logoSvg from "../assets/svgs/logo.svg";
@@ -23,6 +23,7 @@ const Navbar = () => {
         const url = `https://api.themoviedb.org/3/search/movie?api_key=${API_KEY}&query=${query}`;
         const response = await axios.get<{ results: MovieResult[] }>(url);
         setResults(response.data.results);
+        console.log(results);
         navigate("/search-results", {
           state: { results: response.data.results },
         });
