@@ -82,28 +82,30 @@ const MovieInfo = ({
               </li>
             ))}
           </ul>
-          {trailerUrl && (
-            <Trailer
-              trailerUrl={trailerUrl}
-              title={movieDetails.title}
-              overview={overview}
-            />
-          )}
-          <div className="flex flex-row items-center gap-3 my-4">
-            <div className="cursor-pointer" onClick={toggleRatingModal}>
-              <p>
-                <strong>Rate</strong>
-              </p>
-              <CiStar size={50} color="gold" />
-            </div>
-            {submittedRating !== null && (
-              <div>
-                <p>
-                  <strong>Your Rating</strong>
-                </p>
-                <p className="text-4xl">{submittedRating}/10</p>
-              </div>
+          <div className="flex gap-5">
+            {trailerUrl && (
+              <Trailer
+                trailerUrl={trailerUrl}
+                title={movieDetails.title}
+                overview={overview}
+              />
             )}
+            <div className="flex flex-row items-center gap-3 my-1">
+              <div className="cursor-pointer" onClick={toggleRatingModal}>
+                <p>
+                  <strong>Rate</strong>
+                </p>
+                <CiStar size={50} color="gold" />
+              </div>
+              {submittedRating !== null && (
+                <div>
+                  <p>
+                    <strong>Your Rating</strong>
+                  </p>
+                  <p className="text-4xl">{submittedRating}/10</p>
+                </div>
+              )}
+            </div>
           </div>
         </div>
       </div>
