@@ -32,3 +32,14 @@ export const deleteMovieRating = async (id: string) => {
   const url = `https://api.themoviedb.org/3/movie/${id}/rating?api_key=${API_KEY}`;
   return axios.delete(url, options);
 };
+
+export const addToWatchlist = async (accountId: string, movieId: string) => {
+  const url = `https://api.themoviedb.org/3/account/${accountId}/watchlist?api_key=${API_KEY}`;
+  const body = {
+    media_type: "movie",
+    media_id: movieId,
+    watchlist: true,
+  };
+
+  return axios.post(url, body, options);
+};

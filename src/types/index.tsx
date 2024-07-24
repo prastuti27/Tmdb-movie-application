@@ -1,4 +1,8 @@
 // types.ts
+interface Genre {
+  id: number;
+  name: string;
+}
 export type Movie = {
   id: string;
   title: string;
@@ -9,7 +13,7 @@ export type Movie = {
   popularity: number;
   vote_average: number;
   vote_count: number;
-  genre_ids: number[];
+  genres: Genre[];
   overview: string;
 };
 

@@ -47,7 +47,10 @@ const MovieTrendingList = () => {
                 releaseDate={movie.release_date}
               />
             </div>
-            <MovieCardFooter releaseDate={movie.release_date} />
+            <MovieCardFooter
+              releaseDate={movie.release_date}
+              movieId={movie.id}
+            />
           </div>
         ))}
       </div>

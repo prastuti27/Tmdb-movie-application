@@ -3,7 +3,6 @@ import Card from "./Card";
 import Loader from "./Loader";
 import ErrorMessage from "./Error";
 import useApiCall from "../Hooks/useApiCall";
-import MovieCardFooter from "./MovieCardFooter";
 
 interface Movie {
   id: number;
@@ -44,7 +43,6 @@ const WatchlistPage = () => {
                 image={`https://image.tmdb.org/t/p/w500${movie.backdrop_path}`}
                 releaseDate={movie.release_date}
               />
-              <MovieCardFooter releaseDate={movie.release_date} />
             </div>
           ))}
         </div>

@@ -1,4 +1,11 @@
 import Typography from "./Typography";
+import { CiStar } from "react-icons/ci";
+import Trailer from "./Trailer";
+
+interface Genre {
+  id: number;
+  name: string;
+}
 
 interface MovieInfoProps {
   movieDetails: {
@@ -10,11 +17,26 @@ interface MovieInfoProps {
     popularity: number;
     vote_average: number;
     vote_count: number;
-    genre_ids: number[];
+    genres: Genre[];
+    overview: string;
   };
+  trailerUrl: string | null;
+  showRatingModal: boolean;
+  toggleRatingModal: () => void;
+  submittedRating: number | null;
+  rating: number;
+  handleRatingChange: (newRating: number) => void;
+  handleRateSubmit: (event: React.FormEvent) => void;
+  handleDelete: () => void;
 }
 
-const MovieInfo = ({ movieDetails }: MovieInfoProps) => {
+const MovieInfo = ({
+  movieDetails,
+  trailerUrl,
+
+  toggleRatingModal,
+  submittedRating,
+}: MovieInfoProps) => {
   const {
     title,
     poster_path,
@@ -24,8 +46,11 @@ const MovieInfo = ({ movieDetails }: MovieInfoProps) => {
     popularity,
     vote_average,
     vote_count,
-    genre_ids,
+    genres = [],
+    overview, // Ensure this is included for Trailer component
   } = movieDetails;
+
+  const genreNames = genres.map((genre) => genre.name).join(", ");
 
   const details = [
     { label: "Original Title", value: original_title },
@@ -34,7 +59,7 @@ const MovieInfo = ({ movieDetails }: MovieInfoProps) => {
     { label: "Popularity", value: popularity },
     { label: "Vote Average", value: vote_average },
     { label: "Vote Count", value: vote_count },
-    { label: "Genres", value: genre_ids + "," },
+    { label: "Genres", value: genreNames },
   ];
 
   return (
@@ -48,7 +73,7 @@ const MovieInfo = ({ movieDetails }: MovieInfoProps) => {
           />
         )}
         <div className="md:w-2/3">
-          <Typography content={title} variant="h3" />
+          <Typography content={title} variant="h2" />
           <ul className="mb-4">
             {details.map((detail) => (
               <li key={detail.label}>
@@ -57,6 +82,29 @@ const MovieInfo = ({ movieDetails }: MovieInfoProps) => {
               </li>
             ))}
           </ul>
+          {trailerUrl && (
+            <Trailer
+              trailerUrl={trailerUrl}
+              title={movieDetails.title}
+              overview={overview}
+            />
+          )}
+          <div className="flex flex-row items-center gap-3 my-4">
+            <div className="cursor-pointer" onClick={toggleRatingModal}>
+              <p>
+                <strong>Rate</strong>
+              </p>
+              <CiStar size={50} color="gold" />
+            </div>
+            {submittedRating !== null && (
+              <div>
+                <p>
+                  <strong>Your Rating</strong>
+                </p>
+                <p className="text-4xl">{submittedRating}/10</p>
+              </div>
+            )}
+          </div>
         </div>
       </div>
     </div>

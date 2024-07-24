@@ -76,7 +76,7 @@ const Navbar = () => {
       <Button
         text="Logout"
         onClick={handleLogout}
-        className="text-white hover:text-gray-300"
+        className=" bg-primary text-black p-2 rounded-xl"
       />
     </div>
   );

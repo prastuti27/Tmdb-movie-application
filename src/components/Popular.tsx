@@ -4,6 +4,7 @@ import Loader from "./Loader";
 import ErrorMessage from "./Error";
 import useApiCall from "../Hooks/useApiCall";
 import MovieCardFooter from "./MovieCardFooter";
+
 import { useNavigate } from "react-router-dom";
 
 interface Movie {
@@ -47,7 +48,10 @@ const MovieTrendingList = () => {
                 releaseDate={movie.release_date}
               />
             </div>
-            <MovieCardFooter releaseDate={movie.release_date} />
+            <MovieCardFooter
+              releaseDate={movie.release_date}
+              movieId={movie.id}
+            />
           </div>
         ))}
       </div>
