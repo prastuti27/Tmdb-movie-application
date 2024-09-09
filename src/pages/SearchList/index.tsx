@@ -5,7 +5,7 @@ interface MovieResult {
   id: number;
   title: string;
   release_date: string;
-
+  vote_average: number;
   poster_path: string;
 }
 
@@ -31,6 +31,7 @@ const SearchList = () => {
             title={movie.title}
             image={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}
             releaseDate={movie.release_date}
+            vote_average={movie.vote_average}
           />
         </div>
       ))}
