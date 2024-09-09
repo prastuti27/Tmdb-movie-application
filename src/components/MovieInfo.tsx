@@ -47,7 +47,7 @@ const MovieInfo = ({
     vote_average,
     vote_count,
     genres = [],
-    overview, // Ensure this is included for Trailer component
+    overview,
   } = movieDetails;
 
   const genreNames = genres.map((genre) => genre.name).join(", ");

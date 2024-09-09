@@ -13,6 +13,7 @@ interface Movie {
   backdrop_path: string;
   overview: string;
   release_date: string;
+  vote_average: number;
 }
 
 const MovieTrendingList = () => {
@@ -46,6 +47,7 @@ const MovieTrendingList = () => {
                 title={movie.title}
                 image={`https://image.tmdb.org/t/p/w500${movie.backdrop_path}`}
                 releaseDate={movie.release_date}
+                vote_average={movie.vote_average}
               />
             </div>
             <MovieCardFooter
