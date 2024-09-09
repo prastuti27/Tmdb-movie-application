@@ -6,7 +6,6 @@ import { useParams } from "react-router-dom";
 import MovieInfo from "../../components/MovieInfo";
 import RatingModal from "../../components/RatingModal";
 import Reviews from "../../components/Reviews";
-import RatingProgressBar from "../../components/CircleBar";
 
 import { Movie, Review, Video } from "../../types";
 import useApiCall from "../../Hooks/useApiCall";
@@ -95,7 +94,7 @@ const MovieDetails = () => {
   }
 
   return (
-    <div className="p-6">
+    <div className="">
       <MovieInfo
         movieDetails={movieDetails}
         trailerUrl={trailerUrl}
@@ -118,9 +117,6 @@ const MovieDetails = () => {
         handleDelete={handleDelete}
       />
       <Reviews reviews={reviews?.results ?? []} />
-      <div className="mt-6">
-        <RatingProgressBar voteAverage={movieDetails.vote_average} />
-      </div>
     </div>
   );
 };

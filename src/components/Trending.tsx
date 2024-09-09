@@ -37,7 +37,7 @@ const MovieTrendingList = () => {
 
   return (
     <div>
-      <Typography variant="h2" content="Popular Movies" />
+      <Typography variant="h2" content="Trending Movies" />
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-6">
         {movies?.results.map((movie) => (
           <div key={movie.id} className="flex flex-col">
