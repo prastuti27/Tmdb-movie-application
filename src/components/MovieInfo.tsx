@@ -2,7 +2,7 @@ import Typography from "./Typography";
 import { CiStar } from "react-icons/ci";
 import Trailer from "./Trailer";
 import { PlayIcon } from "./PlayIcon";
-import RatingProgressBar from "../components/CircleBar";
+import RatingProgressBar from "./RatingProgressBar";
 
 interface Genre {
   id: number;
@@ -46,9 +46,7 @@ const MovieInfo = ({
     original_title,
     original_language,
     release_date,
-    popularity,
-    vote_average,
-    vote_count,
+
     genres = [],
     overview,
   } = movieDetails;
@@ -59,9 +57,6 @@ const MovieInfo = ({
     { label: "Original Title", value: original_title },
     { label: "Language", value: original_language },
     { label: "Release Date", value: release_date },
-    { label: "Popularity", value: popularity.toFixed(1) },
-    { label: "Vote Average", value: vote_average.toFixed(1) },
-    { label: "Vote Count", value: vote_count },
     { label: "Genres", value: genreNames },
   ];
 
@@ -89,24 +84,6 @@ const MovieInfo = ({
             variant="h2"
             className="text-4xl md:text-5xl font-bold mb-4"
           />
-          <ul className="mb-4 space-y-2">
-            {details.map((detail) => (
-              <li key={detail.label} className="flex">
-                <span className="font-semibold w-36">{detail.label}:</span>{" "}
-                <span>{detail.value}</span>
-              </li>
-            ))}
-          </ul>
-          <div className="flex items-center mb-4">
-            <PlayIcon />
-            {trailerUrl && (
-              <Trailer
-                trailerUrl={trailerUrl}
-                title={title}
-                overview={overview}
-              />
-            )}
-          </div>
           <div className="flex items-center gap-4">
             <div
               className="cursor-pointer flex items-center"
@@ -122,8 +99,31 @@ const MovieInfo = ({
               </div>
             )}
           </div>
-          <div className="mt-6">
-            <RatingProgressBar voteAverage={movieDetails.vote_average} />
+          <ul className="mb-4 space-y-2">
+            {details.map((detail) => (
+              <li key={detail.label} className="flex">
+                <span className="font-semibold w-36">{detail.label}:</span>{" "}
+                <span>{detail.value}</span>
+              </li>
+            ))}
+          </ul>
+          <div className="flex items-center gap-3">
+            <div className="">
+              <RatingProgressBar
+                voteAverage={movieDetails.vote_average}
+                className="w-[65px] h-[65px]"
+              />
+            </div>
+            <div className="flex items-center ">
+              {trailerUrl && (
+                <Trailer
+                  trailerUrl={trailerUrl}
+                  title={title}
+                  icon={<PlayIcon />}
+                  overview={overview}
+                />
+              )}
+            </div>
           </div>
         </div>
       </div>

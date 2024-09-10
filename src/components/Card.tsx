@@ -1,5 +1,5 @@
 import Typography from "./Typography";
-import RatingProgressBar from "./CircleBar";
+import RatingProgressBar from "./RatingProgressBar";
 
 interface CardProps {
   title: string;

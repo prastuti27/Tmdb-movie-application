@@ -1,14 +1,16 @@
 import { useState } from "react";
 import Button from "./Button";
 import { MdKeyboardDoubleArrowRight } from "react-icons/md";
+import { PlayIcon } from "./PlayIcon";
 
 interface TrailerProps {
   trailerUrl: string;
   title: string;
   overview: string;
+  icon: React.ReactNode;
 }
 
-const Trailer = ({ trailerUrl, title }: TrailerProps) => {
+const Trailer = ({ trailerUrl, title, icon }: TrailerProps) => {
   const [showModal, setShowModal] = useState(false);
 
   const toggleModal = () => {
@@ -23,7 +25,14 @@ const Trailer = ({ trailerUrl, title }: TrailerProps) => {
         onClick={toggleModal}
         className="flex items-center text-primary text-xl font-extrabold"
         text="Trailer"
-        icon={<MdKeyboardDoubleArrowRight />}
+        icon={
+          <>
+            <div className="flex justify-center items-center gap-2">
+              <PlayIcon />
+              <MdKeyboardDoubleArrowRight />
+            </div>
+          </>
+        }
       />
       {showModal && (
         <>

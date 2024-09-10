@@ -1,17 +1,21 @@
-// src/components/RatingProgressBar.tsx
-
 import { CircularProgressbar, buildStyles } from "react-circular-progressbar";
 import "react-circular-progressbar/dist/styles.css";
 
 interface RatingProgressBarProps {
   voteAverage?: number;
+  className?: string;
 }
 
-const RatingProgressBar = ({ voteAverage = 0 }: RatingProgressBarProps) => {
+const RatingProgressBar = ({
+  voteAverage = 0,
+  className = "",
+}: RatingProgressBarProps) => {
   const value = voteAverage * 10;
 
+  const containerClasses = `w-10 h-10 rounded-full bg-gray-800  ${className}`;
+
   return (
-    <div className="w-10 h-10 rounded-3xl bg-gray-800 mx-auto">
+    <div className={containerClasses}>
       <CircularProgressbar
         value={value}
         text={`${voteAverage.toFixed(1)}`}

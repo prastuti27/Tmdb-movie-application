@@ -7,9 +7,11 @@ import WatchlistPage from "../../components/WatchlistPage";
 const Dashboard = () => {
   return (
     <>
-      <Trending />
-      <Popular />
-      <WatchlistPage />
+      <div className="px-10">
+        <Trending />
+        <Popular />
+        <WatchlistPage />
+      </div>
     </>
   );
 };

@@ -1,8 +1,8 @@
 export const PlayIcon = () => {
   return (
-    <div className="playbtn flex items-center gap-5 cursor-pointer hover:animate-trailorPlay">
+    <div className="playbtn flex items-center gap-4 cursor-pointer hover:animate-trailorPlay">
       <svg
-        className="w-16 md:w-20 triangle transition-all ease-in-out duration-700"
+        className="w-12 md:w-16 triangle transition-all ease-in-out duration-700"
         xmlns="http://www.w3.org/2000/svg"
         xmlnsXlink="http://www.w3.org/1999/xlink"
         viewBox="0 0 213.7 213.7"
@@ -20,9 +20,6 @@ export const PlayIcon = () => {
           r="103.3"
         ></circle>
       </svg>
-      <span className="text-white text-xl transition-all duration-700 ease-in-out hover:text-pink-500">
-        Play Trailer
-      </span>
     </div>
   );
 };
