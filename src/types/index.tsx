@@ -18,11 +18,15 @@ export type Movie = {
   overview: string;
 };
 
-export type Review = {
+export interface Review {
   author: string;
   content: string;
   id: string;
-};
+  author_details: {
+    avatar_path: string | null;
+  };
+  created_at: string;
+}
 
 export type Video = {
   type: string;

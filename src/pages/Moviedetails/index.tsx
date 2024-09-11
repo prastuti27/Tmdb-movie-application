@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import MovieInfo from "../../components/MovieInfo";
 import RatingModal from "../../components/RatingModal";
 import Reviews from "../../components/Reviews";
-import Card from "../../components/Card"; // Import Card component for recommendations
+import Card from "../../components/Card";
 
 import { Movie, Review, Video } from "../../types";
 import useApiCall from "../../Hooks/useApiCall";
