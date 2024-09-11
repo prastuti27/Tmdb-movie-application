@@ -10,7 +10,7 @@ interface TrailerProps {
   icon: React.ReactNode;
 }
 
-const Trailer = ({ trailerUrl, title, icon }: TrailerProps) => {
+const Trailer = ({ trailerUrl, title }: TrailerProps) => {
   const [showModal, setShowModal] = useState(false);
 
   const toggleModal = () => {

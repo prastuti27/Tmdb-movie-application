@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { CiStar } from "react-icons/ci";
 import { FaStar } from "react-icons/fa"; // For the filled star icon
 import Typography from "./Typography";
