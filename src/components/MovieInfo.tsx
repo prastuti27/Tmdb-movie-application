@@ -1,5 +1,6 @@
 import Typography from "./Typography";
 import { CiStar } from "react-icons/ci";
+import { FaStar } from "react-icons/fa";
 import Trailer from "./Trailer";
 import { PlayIcon } from "./PlayIcon";
 import RatingProgressBar from "./RatingProgressBar";
@@ -70,7 +71,7 @@ const MovieInfo = ({
       }}
     >
       <div className="absolute inset-0 bg-black bg-opacity-70"></div>
-      <div className="relative z-10 max-w-5xl mx-auto px-4 py-8 flex flex-col md:flex-row bg-opacity-90 rounded-lg shadow-lg">
+      <div className="relative  max-w-5xl mx-auto px-4 py-8 flex flex-col md:flex-row bg-opacity-90 rounded-lg shadow-lg">
         {poster_path && (
           <img
             className="w-full md:w-1/3 h-auto rounded-lg mb-4 md:mb-0 md:mr-8 shadow-md"
@@ -84,14 +85,20 @@ const MovieInfo = ({
             variant="h2"
             className="text-4xl md:text-5xl font-bold mb-4"
           />
-          <div className="flex items-center gap-4">
-            <div
-              className="cursor-pointer flex items-center"
-              onClick={toggleRatingModal}
-            >
+          <div
+            className="cursor-pointer flex items-center"
+            onClick={toggleRatingModal}
+          >
+            {submittedRating ? (
+              <FaStar size={50} color="gold" />
+            ) : (
               <CiStar size={50} color="gold" />
-              <span className="ml-2 text-lg font-semibold">Rate</span>
-            </div>
+            )}
+            <span className="ml-2 text-lg font-semibold">
+              {submittedRating ? "Rated" : "Rate"}
+            </span>
+          </div>
+          <div className="flex items-center gap-4">
             {submittedRating !== null && (
               <div className="flex items-center">
                 <span className="text-lg font-semibold mr-2">Your Rating:</span>

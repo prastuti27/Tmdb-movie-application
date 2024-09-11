@@ -1,5 +1,6 @@
-import React from "react";
+import React, { useState } from "react";
 import { CiStar } from "react-icons/ci";
+import { FaStar } from "react-icons/fa"; // For the filled star icon
 import Typography from "./Typography";
 import { IoCloseCircle } from "react-icons/io5";
 import Button from "./Button";
@@ -53,10 +54,12 @@ const RatingModal = ({
                     htmlFor={`rating-${ratingValue}`}
                     className="block cursor-pointer"
                   >
-                    <CiStar
-                      size={30}
-                      color={rating >= ratingValue ? "gold" : "gray"}
-                    />
+                    {/* Conditionally render the filled star if rating is set */}
+                    {rating >= ratingValue ? (
+                      <FaStar size={30} color="gold" />
+                    ) : (
+                      <CiStar size={30} color="gray" />
+                    )}
                   </label>
                 </div>
               );
