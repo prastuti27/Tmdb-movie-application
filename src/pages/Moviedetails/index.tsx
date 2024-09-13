@@ -1,12 +1,11 @@
 import { useState } from "react";
-import { useParams } from "react-router-dom";
-import { useNavigate } from "react-router-dom";
-import MovieInfo from "../../components/MovieInfo";
+import { useParams, useNavigate } from "react-router-dom";
+import MovieInfo from "./MovieInfo";
 import RatingModal from "../../components/RatingModal";
-import Reviews from "../../components/Reviews";
+import Reviews from "./Reviews";
 import Card from "../../components/Card";
-
-import { Movie, Review, Video } from "../../types";
+import Typography from "../../components/Typography";
+import { Movie, Review, Video, Cast } from "../../types"; // Include Cast type
 import useApiCall from "../../Hooks/useApiCall";
 import Loader from "../../components/Loader";
 import ErrorMessage from "../../components/Error";
@@ -21,9 +20,11 @@ const MovieDetails = () => {
   const movieDetailsEndpoint = `/movie/${id}?api_key=${API_KEY}`;
   const videoEndpoint = `/movie/${id}/videos?api_key=${API_KEY}`;
   const reviewsEndpoint = `/movie/${id}/reviews?api_key=${API_KEY}`;
-  const ratingEndpoint = `/movie/${id}/rating?api_key=${API_KEY}`;
+  const castEndpoint = `/movie/${id}/credits?api_key=${API_KEY}`; // Endpoint for fetching cast data
   const recommendationsEndpoint = `/movie/${id}/recommendations?api_key=${API_KEY}`;
   const navigate = useNavigate();
+
+  // Fetch movie details, video, reviews, and cast
   const {
     data: movieDetails,
     error: movieError,
@@ -40,6 +41,11 @@ const MovieDetails = () => {
     loading: reviewsLoading,
   } = useApiCall<{ results: Review[] }>(reviewsEndpoint);
   const {
+    data: castData,
+    error: castError,
+    loading: castLoading,
+  } = useApiCall<{ cast: Cast[] }>(castEndpoint); // Fetch cast data
+  const {
     data: recommendationsData,
     error: recommendationsError,
     loading: recommendationsLoading,
@@ -47,24 +53,17 @@ const MovieDetails = () => {
 
   const { postData: postRating, deleteData: deleteRating } = useApiCall<{
     value: number;
-  }>(ratingEndpoint, "POST");
+  }>(`/movie/${id}/rating`, "POST");
 
   const trailer = videoData?.results.find(
     (video: Video) => video.type === "Trailer" && video.site === "YouTube"
   )?.key;
-
   const trailerUrl = trailer
     ? `https://www.youtube.com/embed/${trailer}`
     : null;
 
-  const toggleRatingModal = () => {
-    setShowRatingModal(!showRatingModal);
-  };
-
-  const handleRatingChange = (newRating: number) => {
-    setRating(newRating);
-  };
-
+  const toggleRatingModal = () => setShowRatingModal(!showRatingModal);
+  const handleRatingChange = (newRating: number) => setRating(newRating);
   const handleRateSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
     try {
@@ -75,9 +74,8 @@ const MovieDetails = () => {
       console.error("Failed to submit rating:", error);
     }
   };
-  const handleCardClick = (id: number) => {
-    navigate(`/movie/${id}`);
-  };
+  const handleCardClick = (id: number) => navigate(`/movie/${id}`);
+
   const handleDelete = async () => {
     try {
       if (deleteRating) {
@@ -91,7 +89,13 @@ const MovieDetails = () => {
     }
   };
 
-  if (movieError || videoError || reviewsError || recommendationsError) {
+  if (
+    movieError ||
+    videoError ||
+    reviewsError ||
+    castError ||
+    recommendationsError
+  ) {
     return (
       <ErrorMessage message="Failed to load movie details. Please try again later." />
     );
@@ -101,6 +105,7 @@ const MovieDetails = () => {
     movieLoading ||
     videoLoading ||
     reviewsLoading ||
+    castLoading ||
     recommendationsLoading ||
     !movieDetails
   ) {
@@ -130,12 +135,27 @@ const MovieDetails = () => {
         handleRateSubmit={handleRateSubmit}
         handleDelete={handleDelete}
       />
+      <div className="cast-section mx-5 px-5">
+        <Typography variant="h2" content="Top Cast" />
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-6 mx-5">
+          {castData?.cast.slice(0, 6).map((castMember) => (
+            <div key={castMember.id} className="cast-card text-center">
+              <img
+                src={`https://image.tmdb.org/t/p/w500${castMember.profile_path}`}
+                alt={castMember.name}
+                className="w-32 h-32 rounded-full mx-auto object-cover"
+              />
+              <Typography variant="h3" content={castMember.name} />
+              <Typography variant="h3" content={`as ${castMember.character}`} />
+            </div>
+          ))}
+        </div>
+      </div>
       <Reviews reviews={reviews?.results ?? []} />
 
-      {/* Recommendations Section */}
-      <div className="recommendations-section">
-        <h2>Recommended Movies</h2>
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-6">
+      <div className="recommendations-section mx-5 px-5">
+        <Typography variant="h2" content="Recommended Movies" />
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-6 mx-5">
           {recommendationsData?.results.map((recommendation) => (
             <div
               key={recommendation.id}

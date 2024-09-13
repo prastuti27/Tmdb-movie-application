@@ -1,9 +1,9 @@
-import Typography from "./Typography";
+import Typography from "../../components/Typography";
 import { CiStar } from "react-icons/ci";
 import { FaStar } from "react-icons/fa";
-import Trailer from "./Trailer";
-import { PlayIcon } from "./PlayIcon";
-import RatingProgressBar from "./RatingProgressBar";
+import Trailer from "../../components/Trailer";
+import { PlayIcon } from "../../components/PlayIcon";
+import RatingProgressBar from "../../components/RatingProgressBar";
 
 interface Genre {
   id: number;

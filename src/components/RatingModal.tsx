@@ -29,13 +29,25 @@ const RatingModal = ({
   if (!showModal) return null;
 
   return (
-    <div className="fixed top-0 left-0 w-full h-full bg-black bg-opacity-50 flex justify-center items-center">
-      <div className="bg-white bg-opacity-80 rounded-lg p-8 max-w-md w-full relative">
-        <Typography content={title} variant="h2" />
-        <Typography content={overview} variant="p" />
+    <div className="fixed inset-0 bg-black bg-opacity-60 flex justify-center items-center z-50">
+      <div className="bg-white rounded-lg shadow-lg p-6 max-w-lg w-full relative">
+        <Typography
+          content={title}
+          variant="h2"
+          className="text-2xl font-semibold mb-4"
+        />
+        <Typography
+          content={overview}
+          variant="p"
+          className="text-gray-700 mb-6"
+        />
 
         <form onSubmit={handleRateSubmit} className="text-center">
-          <Typography content="Rate This" variant="h3" />
+          <Typography
+            content="Rate This"
+            variant="h3"
+            className="text-xl font-medium mb-4"
+          />
           <div className="flex justify-center mb-4">
             {[...Array(10)].map((_, index) => {
               const ratingValue = index + 1;
@@ -54,7 +66,6 @@ const RatingModal = ({
                     htmlFor={`rating-${ratingValue}`}
                     className="block cursor-pointer"
                   >
-                    {/* Conditionally render the filled star if rating is set */}
                     {rating >= ratingValue ? (
                       <FaStar size={30} color="gold" />
                     ) : (
@@ -65,20 +76,22 @@ const RatingModal = ({
               );
             })}
           </div>
-          <Button
-            text="Rate"
-            onClick={handleRateSubmit as any}
-            className="bg-gray-700 text-white px-4 py-2 rounded mr-2"
-          />
-          <Button
-            text="Delete"
-            onClick={handleDelete}
-            className="bg-red-600 text-white px-4 py-2 rounded"
-          />
+          <div className="flex justify-center space-x-4">
+            <Button
+              text="Rate"
+              onClick={handleRateSubmit as any}
+              className="bg-blue-500 hover:bg-blue-600 text-white px-6 py-2 rounded-md transition duration-200"
+            />
+            <Button
+              text="Delete"
+              onClick={handleDelete}
+              className="bg-red-600 hover:bg-red-700 text-white px-6 py-2 rounded-md transition duration-200"
+            />
+          </div>
         </form>
         <button
           onClick={closeModal}
-          className="absolute top-4 right-4 text-red-600 hover:text-red-900"
+          className="absolute top-4 right-4 text-gray-700 hover:text-gray-900 transition duration-200"
         >
           <IoCloseCircle size={24} />
         </button>

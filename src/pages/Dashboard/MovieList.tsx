@@ -1,9 +1,9 @@
-import Typography from "./Typography";
-import Card from "./Card";
-import Loader from "./Loader";
-import ErrorMessage from "./Error";
-import useApiCall from "../Hooks/useApiCall";
-import MovieCardFooter from "./MovieCardFooter";
+import Typography from "../../components/Typography";
+import Card from "../../components/Card";
+import Loader from "../../components/Loader";
+import ErrorMessage from "../../components/Error";
+import useApiCall from "../../Hooks/useApiCall";
+import MovieCardFooter from "../../components/MovieCardFooter";
 import { useNavigate } from "react-router-dom";
 
 interface Movie {
@@ -12,15 +12,20 @@ interface Movie {
   backdrop_path: string;
   overview: string;
   release_date: string;
-  vote_average: number; // Ensure vote_average is included
+  vote_average: number;
 }
 
-const MovieTrendingList = () => {
+interface MovieListProps {
+  apiEndpoint: string;
+  title: string;
+}
+
+const MovieList = ({ apiEndpoint, title }: MovieListProps) => {
   const {
     data: movies,
     error,
     loading,
-  } = useApiCall<{ results: Movie[] }>("/movie/popular?page=1");
+  } = useApiCall<{ results: Movie[] }>(apiEndpoint);
 
   const navigate = useNavigate();
 
@@ -37,7 +42,7 @@ const MovieTrendingList = () => {
 
   return (
     <div>
-      <Typography variant="h2" content="Trending Movies" />
+      <Typography variant="h2" content={title} />
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-6">
         {movies?.results.map((movie) => (
           <div key={movie.id} className="flex flex-col">
@@ -60,4 +65,4 @@ const MovieTrendingList = () => {
   );
 };
 
-export default MovieTrendingList;
+export default MovieList;

@@ -1,6 +1,6 @@
 import { useState } from "react";
-import Typography from "./Typography";
-import { Review } from "../types";
+import Typography from "../../components/Typography";
+import { Review } from "../../types";
 import { FaUser } from "react-icons/fa";
 
 interface ReviewsProps {
