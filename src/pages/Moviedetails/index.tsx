@@ -6,7 +6,7 @@ import Reviews from "./Reviews";
 
 import MovieList from "../Dashboard/MovieList";
 import Typography from "../../components/Typography";
-import { Movie, Review, Video, Cast } from "../../types"; // Include Cast type
+import { Movie, Review, Video, Cast } from "../../types";
 import useApiCall from "../../Hooks/useApiCall";
 import Loader from "../../components/Loader";
 import ErrorMessage from "../../components/Error";
@@ -21,11 +21,9 @@ const MovieDetails = () => {
   const movieDetailsEndpoint = `/movie/${id}?api_key=${API_KEY}`;
   const videoEndpoint = `/movie/${id}/videos?api_key=${API_KEY}`;
   const reviewsEndpoint = `/movie/${id}/reviews?api_key=${API_KEY}`;
-  const castEndpoint = `/movie/${id}/credits?api_key=${API_KEY}`; // Endpoint for fetching cast data
+  const castEndpoint = `/movie/${id}/credits?api_key=${API_KEY}`;
   const recommendationsEndpoint = `/movie/${id}/recommendations?api_key=${API_KEY}`;
-  const navigate = useNavigate();
 
-  // Fetch movie details, video, reviews, and cast
   const {
     data: movieDetails,
     error: movieError,
@@ -45,7 +43,7 @@ const MovieDetails = () => {
     data: castData,
     error: castError,
     loading: castLoading,
-  } = useApiCall<{ cast: Cast[] }>(castEndpoint); // Fetch cast data
+  } = useApiCall<{ cast: Cast[] }>(castEndpoint);
   const {
     data: recommendationsData,
     error: recommendationsError,
@@ -75,7 +73,6 @@ const MovieDetails = () => {
       console.error("Failed to submit rating:", error);
     }
   };
-  const handleCardClick = (id: number) => navigate(`/movie/${id}`);
 
   const handleDelete = async () => {
     try {
@@ -154,29 +151,12 @@ const MovieDetails = () => {
       </div>
       <Reviews reviews={reviews?.results ?? []} />
 
-      {/* <div className="recommendations-section mx-5 px-5">
-        <Typography variant="h2" content="Recommended Movies" />
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-6 mx-5">
-          {recommendationsData?.results.map((recommendation) => (
-            <div
-              key={recommendation.id}
-              className="cursor-pointer"
-              onClick={() => handleCardClick(Number(recommendation.id))}
-            >
-              <Card
-                title={recommendation.title}
-                image={`https://image.tmdb.org/t/p/w500${recommendation.backdrop_path}`}
-                releaseDate={recommendation.release_date}
-                vote_average={recommendation.vote_average}
-              />
-            </div>
-          ))}
-        </div>
-      </div>*/}
-      <MovieList
-        apiEndpoint={recommendationsEndpoint}
-        title="Recommended Movies"
-      />
+      <div className="mx-5  p-5">
+        <MovieList
+          apiEndpoint={recommendationsEndpoint}
+          title="Recommended Movies"
+        />
+      </div>
     </div>
   );
 };
