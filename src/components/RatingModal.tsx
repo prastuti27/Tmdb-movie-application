@@ -29,17 +29,17 @@ const RatingModal = ({
   if (!showModal) return null;
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-60 flex justify-center items-center z-50">
-      <div className="bg-white rounded-lg shadow-lg p-6 max-w-lg w-full relative">
+    <div className="fixed inset-0 bg-black bg-opacity-80 flex justify-center items-center z-50">
+      <div className="bg-gray-800 text-gray-200 rounded-lg shadow-lg p-6 max-w-lg w-full relative">
         <Typography
-          content={title}
+          content={`What did you think of ${title}?`}
           variant="h2"
           className="text-2xl font-semibold mb-4"
         />
         <Typography
           content={overview}
           variant="p"
-          className="text-gray-700 mb-6"
+          className="text-gray-400 mb-6"
         />
 
         <form onSubmit={handleRateSubmit} className="text-center">
@@ -80,7 +80,7 @@ const RatingModal = ({
             <Button
               text="Rate"
               onClick={handleRateSubmit as any}
-              className="bg-blue-500 hover:bg-blue-600 text-white px-6 py-2 rounded-md transition duration-200"
+              className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-md transition duration-200"
             />
             <Button
               text="Delete"
@@ -91,7 +91,7 @@ const RatingModal = ({
         </form>
         <button
           onClick={closeModal}
-          className="absolute top-4 right-4 text-gray-700 hover:text-gray-900 transition duration-200"
+          className="absolute top-4 right-4 text-gray-400 hover:text-gray-200 transition duration-200"
         >
           <IoCloseCircle size={24} />
         </button>

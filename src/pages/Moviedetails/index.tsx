@@ -3,7 +3,8 @@ import { useParams, useNavigate } from "react-router-dom";
 import MovieInfo from "./MovieInfo";
 import RatingModal from "../../components/RatingModal";
 import Reviews from "./Reviews";
-import Card from "../../components/Card";
+
+import MovieList from "../Dashboard/MovieList";
 import Typography from "../../components/Typography";
 import { Movie, Review, Video, Cast } from "../../types"; // Include Cast type
 import useApiCall from "../../Hooks/useApiCall";
@@ -153,7 +154,7 @@ const MovieDetails = () => {
       </div>
       <Reviews reviews={reviews?.results ?? []} />
 
-      <div className="recommendations-section mx-5 px-5">
+      {/* <div className="recommendations-section mx-5 px-5">
         <Typography variant="h2" content="Recommended Movies" />
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-6 mx-5">
           {recommendationsData?.results.map((recommendation) => (
@@ -171,7 +172,11 @@ const MovieDetails = () => {
             </div>
           ))}
         </div>
-      </div>
+      </div>*/}
+      <MovieList
+        apiEndpoint={recommendationsEndpoint}
+        title="Recommended Movies"
+      />
     </div>
   );
 };

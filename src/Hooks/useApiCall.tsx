@@ -5,7 +5,7 @@ interface FetchResult<T> {
   data: T | null;
   error: string | null;
   loading: boolean;
-  postData?: (body: object) => Promise<T>; // Update this line
+  postData?: (body: object) => Promise<T>;
   deleteData?: () => Promise<void>;
 }
 
